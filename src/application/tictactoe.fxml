@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pane" onMouseClicked="#clicked" prefHeight="350.0" prefWidth="500.0" style="-fx-background-color: #65c4ea;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.TicTacToeController">
+   <children>
+      <Line endX="325.0" endY="125.0" startX="25.0" startY="125.0" stroke="#2f718a" strokeWidth="3.0" />
+      <Line endX="325.0" endY="225.0" startX="25.0" startY="225.0" stroke="#2f718a" strokeWidth="3.0" />
+      <Line endX="125.0" endY="325.0" fill="#65c4ea" startX="125.0" startY="25.0" stroke="#2f718a" strokeWidth="3.0" />
+      <Line endX="225.0" endY="325.0" startX="225.0" startY="25.0" stroke="#2f718a" strokeWidth="3.0" />
+      <Button layoutX="345.0" layoutY="260.0" mnemonicParsing="false" onAction="#reset" style="-fx-background-color: transparent; -fx-border-color: #2f718a; -fx-border-radius: 10;" text="Reset Game" textFill="#2f718a">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
