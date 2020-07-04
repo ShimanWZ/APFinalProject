@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
+import application.Main;
 import games.TicTacToe;
+import server.Server;
 
 public class WriteFile {
 	public static class TicTacToeFile{
@@ -34,10 +36,12 @@ public class WriteFile {
 		        
 		        
 		        if (game.getWinner() == 1) { //you are the winner
-		        	 out.write(curWinsCount + 1 + " ");
+		        	 Main.getCurUser().setTictactoeCompWins(Main.getCurUser().getTictactoeCompWins() + 1);
+		        	out.write(curWinsCount + 1 + " ");
 		        	 out.write(curLossesCount + " ");
 		        }
 		        else if (game.getWinner() == -1) { //the opponent is the winnet
+		        	 Main.getCurUser().setTictactoeCompLosses(Main.getCurUser().getTictactoeCompLosses() + 1);
 		        	out.write(curWinsCount + " ");
 			        out.write(curLossesCount + 1 + " ");
 		        }
@@ -70,6 +74,7 @@ public class WriteFile {
 				
 				objectOutputStream.writeObject(users);
 				
+				objectOutputStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -5,7 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Scanner;
+
+import base.User;
 
 public class ReadFile {
 	static class TicTacToeFile{
@@ -27,13 +31,15 @@ public class ReadFile {
 		}
 	}
 	public static class UsersFile{
-		public static Object readUsers(){
+		public static HashMap<String, User> readUsers(){
 			try {
 				FileInputStream inputStream = new FileInputStream("server.dat");
 				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 				
-				return objectInputStream.readObject();
+				HashMap<String, User> users = (HashMap<String, User>)(objectInputStream.readObject());
 				
+				objectInputStream.close();
+				return users;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

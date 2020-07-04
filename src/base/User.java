@@ -1,15 +1,26 @@
 package base;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
-public class User {
+import application.Main;
+import application.MainChatSceneController;
+import javafx.application.Platform;
+import server.Server;
+
+public class User implements Serializable {
+	private static final long serialVersionUID = -1470082223508490796L;
+	private int tictactoeCompWins = 0, tictactoeCompLosses = 0, tictactoePlayWins = 0, tictactoePlayLosses = 0;
 	private String username, password, emailAddress, passwordQuestion, passwordAnswer;
-	private Socket socket;
-	private OutputStream outputStream;
-	private InputStream inputStream;
-	private int tictactoeCompWins, tictactoeCompLosses;
+	private transient static ArrayList<MessageListener> messageListener = new ArrayList<>();
+	private ArrayList<User> contacts = new ArrayList<>();
+	private transient ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
+
 	
 	//----------------------------- constructor --------------------------//
 	public User(String username, String password, String emailAddress) {
@@ -17,15 +28,80 @@ public class User {
 		this.password = password;
 		this.emailAddress = emailAddress;
 	}
+	//--------------------------------------------------------------------------//
+	//------------------------- server related methods -------------------------//
+	//--------------------------------------------------------------------------//
 	
-	
-	//----------------------------- getters and setters ------------------------//
-	public void setServerProperties(Socket socket, OutputStream outputStream, InputStream inputStream) {
-		this.socket = socket;
-		this.outputStream = outputStream;
-		this.inputStream = inputStream;
+	//------------------------------signIn methods -----------------------------
+	public static String signIn(String username, String password) throws IOException, ClassNotFoundException {
+		BufferedReader in = Main.getBufferedReader();
+		ObjectOutputStream objOI = Main.getObjOut();
+		
+		//initializing & sending request array....
+		String[] login = new String[3];
+		
+		login[0] = "login";
+		login[1] = username;
+		login[2] = password;
+		
+		objOI.writeObject(login);
+		objOI.flush();
+		
+		// recieving server response
+		String serverAnswer = in.readLine();
+		System.out.println("serv ans: " + serverAnswer);
+		return serverAnsHandler(serverAnswer);
 	}
-
+	private static String serverAnsHandler(String serverAnswer) throws ClassNotFoundException, IOException {
+		if (serverAnswer.equalsIgnoreCase("ok")) { //if the login is successful we need to have the user obj!
+			ObjectInputStream objIn = Main.getObjIn();
+			Object obj = objIn.readObject();
+			System.out.println("user : " + obj);
+			Main.setCurUser((User)obj);
+			
+			ArrayList<String> users = Server.getUsersArraylist(Main.getObjOut(), Main.getObjIn());
+			System.out.println(users);
+			Main.setUsers(users);
+			
+			return "yes";
+		}
+		else if (serverAnswer.equalsIgnoreCase("wrongpass")) return "Wrong Password!";
+		else return "No such user found!";
+	}
+	public static void messageReader() {
+		Thread t = new Thread( new Runnable() {
+			@Override
+			public void run() {
+				readMessageLoop();
+			}
+		});
+		t.start();		
+	}
+	private static void readMessageLoop() {
+		String[] commandArray;
+		ObjectInputStream objectIS = Main.getObjIn();		
+		try {
+			while ((commandArray = (String[])(objectIS.readObject())) != null) {
+				if (commandArray[0].equalsIgnoreCase("recieve")) {
+					handleRecievingMessage(commandArray);
+				}
+			}
+		} catch (IOException | ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+	}
+	private static void handleRecievingMessage(String[] commandArray) {
+		System.out.println(commandArray[1] + " : " + commandArray[2]);
+		for (MessageListener listener: messageListener) {
+			listener.onMessage(commandArray[1], commandArray[2]);
+		}
+		System.out.println("added");
+	}
+	
+	//--------------------------------------------------------------------------//
+	//----------------------------- getters and setters ------------------------//
+	//--------------------------------------------------------------------------//
+	//------------personal data getters & setters
 	public String getUsername() {
 		return username;
 	}
@@ -44,24 +120,6 @@ public class User {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	public Socket getSocket() {
-		return socket;
-	}
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-	public OutputStream getOutputStream() {
-		return outputStream;
-	}
-	public void setOutputStream(OutputStream outputStream) {
-		this.outputStream = outputStream;
-	}
-	public InputStream getInputStream() {
-		return inputStream;
-	}
-	public void setInputStream(InputStream inputStream) {
-		this.inputStream = inputStream;
-	}
 	public String getPasswordQuestion() {
 		return passwordQuestion;
 	}
@@ -73,5 +131,47 @@ public class User {
 	}
 	public void setPasswordAnswer(String passwordAnswer) {
 		this.passwordAnswer = passwordAnswer;
+	}
+	//-------------------------------------------------------------------------------//
+	//----------------wins & losses getters & setters
+	public int getTictactoeCompLosses() {
+		return tictactoeCompLosses;
+	}
+	public void setTictactoeCompLosses(int tictactoeCompLosses) {
+		this.tictactoeCompLosses = tictactoeCompLosses;
+	}
+	public int getTictactoeCompWins() {
+		return tictactoeCompWins;
+	}
+	public void setTictactoeCompWins(int tictactoeCompWins) {
+		this.tictactoeCompWins = tictactoeCompWins;
+	}
+	public int getTictactoePlayWins() {
+		return tictactoePlayWins;
+	}
+	public void setTictactoePlayWins(int tictactoePlayWins) {
+		this.tictactoePlayWins = tictactoePlayWins;
+	}
+	public void setTictactoePlayLosses(int tictactoePlayLosses) {
+		this.tictactoePlayLosses = tictactoePlayLosses;
+	}
+	public int getTictactoePlayLosses() {
+		return tictactoePlayLosses;
+	}
+	public void addMessageListener(MessageListener listener) {
+		messageListener.add(listener);
+	}
+	public void removeMessageListener(MessageListener listener) {
+		messageListener.remove(listener);
+	}
+	public void addUserStatusListener(UserStatusListener listener) {
+		userStatusListeners.add(listener);
+	}
+	public void removeUserStatusListener(UserStatusListener listener) {
+		userStatusListeners.remove(listener);
+	}
+
+	public ArrayList<User> getContacts() {
+		return contacts;
 	}
 }

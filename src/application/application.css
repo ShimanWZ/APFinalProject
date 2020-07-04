@@ -1,1 +1,39 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.scroll-pane {
+    -fx-background-color:  #87c1d4;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: #87c1d4;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color:  #87c1d4;
+    -fx-border-color:  #87c1d4;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color:  #87c1d4;
+    -fx-border-color:  #87c1d4;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color:  #215161;
+    -fx-background-radius: 5em;
+}
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-text-fill: #215161;
+}
+
+.list-cell {
+    -fx-cell-hover-color: #0093ff;
+    -fx-background-color: white;
+}
+
+.list-cell:filled:hover {
+    -fx-cell-hover-color: #0093ff;
+    -fx-text-fill: #215161;
+}

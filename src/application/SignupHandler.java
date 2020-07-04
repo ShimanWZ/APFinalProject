@@ -1,6 +1,8 @@
 package application;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import base.User;
 import javafx.fxml.FXML;
@@ -11,12 +13,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import server.Server;
 
 public class SignupHandler {
 	@FXML private TextField username;
 	@FXML private TextField emailAddress;
-	@FXML private TextField passwordAnswer;
+	@FXML private TextField passwordAnswer; 
 	@FXML private PasswordField password;
 	@FXML private PasswordField passConfirm;
 	@FXML private Label errorLog;
@@ -27,14 +28,13 @@ public class SignupHandler {
 	//------------------------ fxml button and mouse listeners -----------------------------//
 	@FXML
 	private void signup() throws IOException {
-		if (passConfirmation() && emailConfirmation() && usernameConfirmation() && !areFieldsEmpty()) {
+		if (passConfirmation() && emailConfirmation() && !areFieldsEmpty()) {
 			User currentUser = new User(username.getText(), password.getText(), emailAddress.getText());
 			currentUser.setPasswordQuestion(questionChoice.getValue());
 			currentUser.setPasswordAnswer(passwordAnswer.getText());
-			currentUser.setServerProperties(Main.getSocket(), Main.getSocket().getOutputStream(), Main.getSocket().getInputStream());
 			
-			Server.getUsers().put(currentUser.getUsername(), currentUser);
-			
+			sendServerPropetries(currentUser);
+			handleServerResponse();	
 		} else {
 			errorLogHandler();
 		}
@@ -62,13 +62,8 @@ public class SignupHandler {
 		String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	    return emailAddress.getText().matches(regex);
 	}
-	private boolean usernameConfirmation() {	
-		if (Server.getUsers().containsKey(username.getText())) return false;
-		return true;
-	}
 	private void errorLogHandler() {
 		if (areFieldsEmpty()) errorLog.setText("no fields can be empty");
-		else if (!usernameConfirmation()) errorLog.setText("the username You've chosen is taken.");
 		else if (!passConfirmation()) {
 			if (password.getText().length() < 8) errorLog.setText("password should be at least 8 chars!");
 			else errorLog.setText("passwords don't match");
@@ -80,7 +75,23 @@ public class SignupHandler {
 		if (username.getText().isEmpty()) return true;
 		if (emailAddress.getText().isEmpty()) return true;
 		if (passwordAnswer.getText().isEmpty()) return true;
-		return false;
-		
+		return false;	
+	}
+	//server related methods
+	private void sendServerPropetries(User user) throws IOException {
+		ObjectOutputStream objectOI = Main.getObjOut();
+		String[] command = new String[1];
+		command[0] = "signup";
+		//sending array
+		objectOI.writeObject(command);
+		objectOI.flush();
+		//sending user
+		objectOI.writeObject(user);
+		objectOI.flush();
+	}
+	private void handleServerResponse() throws IOException {
+		BufferedReader reader = Main.getBufferedReader();
+		String response = reader.readLine();
+		errorLog.setText(response);
 	}
 }

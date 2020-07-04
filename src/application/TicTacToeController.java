@@ -1,26 +1,33 @@
 package application;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
+import base.User;
 import fileHandling.WriteFile;
 import games.GamesUtils;
 import games.TicTacToe;
 import games.TicTacToeContent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import server.Server;
 
 public class TicTacToeController {
 	@FXML private AnchorPane pane;
+	@FXML private Label winsCount;
+	@FXML private Label lossCount;
 	private TicTacToe curGame = new TicTacToe();
 	private ArrayList<Object> boardContents = new ArrayList<Object>(); //this arraylist comes in handy when we want to clear the screen
-
+	
 	
 	@FXML
-	private void clicked(MouseEvent event) {
+	private void clicked(MouseEvent event) throws IOException {
 		double curX = event.getSceneX(), curY = event.getSceneY();
 		int curI = GamesUtils.getTicTacToeI(curY), curJ = GamesUtils.getTicTacToeJ(curX);
 		
@@ -29,16 +36,17 @@ public class TicTacToeController {
 			//if it is placed, the computer turn will be called
 			if(curGame.setOnBoard(curI, curJ, TicTacToeContent.X)) {
 				draw(curI, curJ, 'X');
-				curGame.computerTurn();
-				draw(curGame.getLastComputerI(), curGame.getLastComputerJ(), 'O');
+				curGame.oponentTurn();
+				draw(curGame.getLastOpponentI(), curGame.getLastOpponentJ(), 'O');
 			}
 		}
 		
 		if (curGame.endOfGame()) {
 			WriteFile.TicTacToeFile.writeWinsAndLosses(curGame);
-			boardContents.clear();
+			reset();
 			System.exit(0);
 		}
+		
 	}
 	@FXML
 	private void reset() {
@@ -50,6 +58,15 @@ public class TicTacToeController {
 	}
 	
 	private void draw(int curI, int curJ, char turn) {
+		
+		
+		
+		winsCount.setText(Main.getCurUser().getTictactoeCompWins() + "");
+		lossCount.setText(Main.getCurUser().getTictactoeCompLosses()+ "");
+		
+		
+		
+		
 		int curX = curJ * 100 + 35;
 		int curY = curI * 100 + 35;
 		

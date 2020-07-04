@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import base.User;
 import javafx.fxml.FXML;
@@ -17,24 +18,27 @@ public class LoginHandler {
 	@FXML private TextField username;
 	@FXML private Label errorLog;
 	
-	@FXML private void signIn() throws IOException {
+	@FXML private void signIn() throws IOException, ClassNotFoundException {
 		String userName = username.getText();
 		String passWord = password.getText();
 		
-		if(Server.getUsers().containsKey(userName)) {
-			User curUser = Server.getUsers().get(userName);
-
-			if (passWord.equals(curUser.getPassword())) {
-				Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
-				Main.tictactoe = new Scene(root);
-				Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-				Main.window.setScene(Main.tictactoe);
-			}
-			else errorLog.setText("Wrong password");
+		String errLogString = User.signIn(userName, passWord);
+		
+		if (errLogString.equalsIgnoreCase("yes")) {
+			User.messageReader();
+			
+			Parent root = FXMLLoader.load(getClass().getResource("MainPageScene.fxml"));
+			Main.tictactoe = new Scene(root);
+			Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Main.window.setScene(Main.tictactoe);
+			
+			/*Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
+			Main.tictactoe = new Scene(root);
+			Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Main.window.setScene(Main.tictactoe);*/
 		}
-		else errorLog.setText("no user found!");
+		else errorLog.setText(errLogString);
 	}
-	
 	@FXML private void signUp() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("SignupScene.fxml"));
 		Main.signup = new Scene(root);
@@ -46,6 +50,6 @@ public class LoginHandler {
 		Main.forgetPassword = new Scene(root);
 		Main.forgetPassword.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Main.window.setScene(Main.forgetPassword);
-		
 	}
+	
 }
