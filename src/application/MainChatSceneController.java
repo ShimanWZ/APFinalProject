@@ -10,38 +10,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class MainChatSceneController {
-	@FXML private AnchorPane contacts;
-	@FXML private AnchorPane chatView;
-	@FXML private ListView<String> list;
 	@FXML private TextField textField;
 	@FXML private ListView<String> messages;
-	private String currentContact;
 	
 	{
 		Main.getCurUser().addMessageListener(new MessageListener() {
 			@Override
 			public void onMessage(String user, String message) {
-				if (user.equalsIgnoreCase(currentContact))
-					messages.getItems().add(user + " : " + message);
+				if (user.equalsIgnoreCase(Main.getContact())) messages.getItems().add(user + " : " + message);
 			}
 		});
 	}
-	private void loadContact(){
-		if (currentContact != list.getSelectionModel().getSelectedItem()) {
-			messages.getItems().clear();
-			currentContact = list.getSelectionModel().getSelectedItem();
-		}
-	}
-	public void load() {
-		for (String user : Main.getUsers()) {
-			if(!list.getItems().contains(user)) {
-				list.getItems().add(user);
-			}
-		}
-	}
 	public void sendMessage() throws IOException {
+		System.out.println("sending called...");
 		String from = Main.getCurUser().getUsername();
-		String to = chooseContact();
+		String to = Main.getContact();
 		String message = textField.getText();
 		ObjectOutputStream objOut = Main.getObjOut();
 		
@@ -61,10 +44,6 @@ public class MainChatSceneController {
 		command[2] = to;
 		command[3] = message;
 		return command;
-	}
-	public String chooseContact() {
-		loadContact();
-		return list.getSelectionModel().getSelectedItem();
 	}
 	public void addMessage(String s){
 		messages.getItems().add(s);

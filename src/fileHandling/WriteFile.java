@@ -36,12 +36,12 @@ public class WriteFile {
 		        
 		        
 		        if (game.getWinner() == 1) { //you are the winner
-		        	 Main.getCurUser().setTictactoeCompWins(Main.getCurUser().getTictactoeCompWins() + 1);
+		        	// Main.getCurUser().setTictactoeCompWins(Main.getCurUser().getTictactoeCompWins() + 1);
 		        	out.write(curWinsCount + 1 + " ");
 		        	 out.write(curLossesCount + " ");
 		        }
 		        else if (game.getWinner() == -1) { //the opponent is the winnet
-		        	 Main.getCurUser().setTictactoeCompLosses(Main.getCurUser().getTictactoeCompLosses() + 1);
+		        	// Main.getCurUser().setTictactoeCompLosses(Main.getCurUser().getTictactoeCompLosses() + 1);
 		        	out.write(curWinsCount + " ");
 			        out.write(curLossesCount + 1 + " ");
 		        }

@@ -61,8 +61,8 @@ public class TicTacToeController {
 		
 		
 		
-		winsCount.setText(Main.getCurUser().getTictactoeCompWins() + "");
-		lossCount.setText(Main.getCurUser().getTictactoeCompLosses()+ "");
+		//winsCount.setText(Main.getCurUser().getTictactoeCompWins() + "");
+		//lossCount.setText(Main.getCurUser().getTictactoeCompLosses()+ "");
 		
 		
 		

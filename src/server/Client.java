@@ -62,12 +62,15 @@ public class Client extends Thread{
 					handleSendingMessage(commandArray);
 				}else if(commandArray[0].equalsIgnoreCase("logout")) {
 					handleLogOut();
+				}else if(commandArray[0].equalsIgnoreCase("addcontact")) {
+					handleAddingContact(commandArray);
 				}
 			}
 		} catch (IOException | ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
 	}
+	
 	
 	
 	//----------------------------helper methods---------------------------------//
@@ -88,15 +91,11 @@ public class Client extends Thread{
 		String password = commandArray[2];
 		if (server.getUsers().containsKey(username)){
 			User curUser = server.getUsers().get(username);
-
-			String pass = server.getUsers().get(username).getPassword();
+			System.out.println(curUser);
+			String pass = curUser.getPassword();
 			if (pass.equals(password)) {
 				this.username = username;
-				//sending servers response
 				outputStream.write("ok\n".getBytes());
-				//sending users object to user
-				objectOS.writeObject(curUser);
-				objectOS.flush();
 			}else {
 				outputStream.write("wrongPass\n".getBytes());
 			}
@@ -122,7 +121,9 @@ public class Client extends Thread{
 		for (Map.Entry entry : server.getUsers().entrySet()) {
 			usersList.add((String)entry.getKey());
 		}
-		objectOS.writeObject(usersList);
+		Object[] arrays = {usersList, server.getUsers().get(this.username)};
+		
+		objectOS.writeObject(arrays);
 		objectOS.flush();
 	}
 	private void handleSendingMessage(String[] commandArray) throws IOException {
@@ -143,6 +144,15 @@ public class Client extends Thread{
 	private void handleLogOut() throws IOException {
 		server.getClients().remove(this);
 		this.socket.close();
+	}
+	private void handleAddingContact(String[] commandArray) {
+		String user = commandArray[1];
+		String addUser = commandArray[2];
+		
+		User thisUser = server.getUsers().get(user);
+		thisUser.addContact(addUser);
+		WriteFile.UsersFile.writeUsers(server.getUsers());
+		System.out.println("contact added");
 	}
 	//---------------------------------------------getter methods-----------------------------------//
 	public ObjectOutputStream getObjectOS() {

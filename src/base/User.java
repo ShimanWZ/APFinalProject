@@ -17,16 +17,22 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -1470082223508490796L;
 	private int tictactoeCompWins = 0, tictactoeCompLosses = 0, tictactoePlayWins = 0, tictactoePlayLosses = 0;
 	private String username, password, emailAddress, passwordQuestion, passwordAnswer;
+	private ArrayList<String> contacts  = new ArrayList<>();
+	private ArrayList<LinkedList<Message>> messages;
 	private transient static ArrayList<MessageListener> messageListener = new ArrayList<>();
-	private ArrayList<User> contacts = new ArrayList<>();
 	private transient ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
-
+	
 	
 	//----------------------------- constructor --------------------------//
+	public User(String username) {
+		this.username = username;
+		contacts  = new ArrayList<>();
+	}
 	public User(String username, String password, String emailAddress) {
 		this.username = username;
 		this.password = password;
 		this.emailAddress = emailAddress;
+		contacts  = new ArrayList<>();
 	}
 	//--------------------------------------------------------------------------//
 	//------------------------- server related methods -------------------------//
@@ -50,19 +56,11 @@ public class User implements Serializable {
 		// recieving server response
 		String serverAnswer = in.readLine();
 		System.out.println("serv ans: " + serverAnswer);
-		return serverAnsHandler(serverAnswer);
+		String ansHandler = serverAnsHandler(serverAnswer);
+		return ansHandler;
 	}
 	private static String serverAnsHandler(String serverAnswer) throws ClassNotFoundException, IOException {
-		if (serverAnswer.equalsIgnoreCase("ok")) { //if the login is successful we need to have the user obj!
-			ObjectInputStream objIn = Main.getObjIn();
-			Object obj = objIn.readObject();
-			System.out.println("user : " + obj);
-			Main.setCurUser((User)obj);
-			
-			ArrayList<String> users = Server.getUsersArraylist(Main.getObjOut(), Main.getObjIn());
-			System.out.println(users);
-			Main.setUsers(users);
-			
+		if (serverAnswer.equalsIgnoreCase("ok")) {
 			return "yes";
 		}
 		else if (serverAnswer.equalsIgnoreCase("wrongpass")) return "Wrong Password!";
@@ -170,8 +168,13 @@ public class User implements Serializable {
 	public void removeUserStatusListener(UserStatusListener listener) {
 		userStatusListeners.remove(listener);
 	}
-
-	public ArrayList<User> getContacts() {
+	public ArrayList<String> getContacts() {
 		return contacts;
+	}
+	public void setContacts(ArrayList<String> contacts) {
+		this.contacts = contacts;
+	}
+	public void addContact(String contact) {
+		if (!this.contacts.contains(contact)) this.contacts.add(contact);
 	}
 }

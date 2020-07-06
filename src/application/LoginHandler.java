@@ -18,6 +18,7 @@ public class LoginHandler {
 	@FXML private TextField username;
 	@FXML private Label errorLog;
 	
+	@SuppressWarnings("unchecked")
 	@FXML private void signIn() throws IOException, ClassNotFoundException {
 		String userName = username.getText();
 		String passWord = password.getText();
@@ -25,17 +26,17 @@ public class LoginHandler {
 		String errLogString = User.signIn(userName, passWord);
 		
 		if (errLogString.equalsIgnoreCase("yes")) {
+			Object[] objects = Server.getUsersProperties(Main.getObjOut(), Main.getObjIn());
+			Main.setUsers((ArrayList<String>) objects[0]);
+			Main.setCurUser((User) objects[1]);
 			User.messageReader();
 			
 			Parent root = FXMLLoader.load(getClass().getResource("MainPageScene.fxml"));
-			Main.tictactoe = new Scene(root);
-			Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Main.window.setScene(Main.tictactoe);
+			Main.mainScene = new Scene(root);
+			Main.mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Main.window.setTitle(userName);
+			Main.window.setScene(Main.mainScene);
 			
-			/*Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
-			Main.tictactoe = new Scene(root);
-			Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			Main.window.setScene(Main.tictactoe);*/
 		}
 		else errorLog.setText(errLogString);
 	}

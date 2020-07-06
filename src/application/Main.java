@@ -23,6 +23,7 @@ import server.Server;
 
 public class Main extends Application {
 	private static User curUser;
+	private static String contact;
 	private static ArrayList<String> users;
 	private static Server server;
 	private static Socket socket  = null;
@@ -34,8 +35,8 @@ public class Main extends Application {
 	private static ObjectOutputStream objOut;
 	private static ObjectInputStream objIn;
 	
-	public static Stage window;
-	public static Scene main, tictactoe, signup, forgetPassword;
+	public static Stage window, game;
+	public static Scene main, tictactoe, signup, forgetPassword, chatScene, mainScene;
 	
 	
 	@Override
@@ -105,5 +106,11 @@ public class Main extends Application {
 	}
 	public static void setUsers(ArrayList<String> users) {
 		Main.users = users;
+	}
+	public static String getContact() {
+		return contact;
+	}
+	public static void setContact(String contact) {
+		Main.contact = contact;
 	}
 }

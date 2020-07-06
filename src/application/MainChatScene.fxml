@@ -1,46 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainChatSceneController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.0000030517578" minWidth="10.0" prefWidth="186.40001220703124" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="534.3999755859375" minWidth="10.0" prefWidth="413.59998779296876" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <ScrollPane prefHeight="400.0" prefWidth="235.0" style="-fx-background-color: transparent;">
-        <content>
-          <AnchorPane fx:id="contacts" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="170.0">
-               <children>
-                  <ListView fx:id="list" onMouseClicked="#chooseContact" onMouseMoved="#load" prefHeight="400.0" prefWidth="170.0" style="-fx-background-color: #87c1d4;" styleClass="contacts-list" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets></ListView>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
-      <ScrollPane prefHeight="400.0" prefWidth="384.0" style="-fx-background-color: transparent;" GridPane.columnIndex="1">
-         <content>
-            <AnchorPane fx:id="chatView" prefHeight="397.0" prefWidth="402.0">
-               <children>
-                  <ListView fx:id="messages" prefHeight="344.0" prefWidth="394.0" style="-fx-background-color: #87c1d4;" stylesheets="@application.css" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0" />
-                  <Button layoutX="356.0" layoutY="349.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="27.0" prefWidth="44.0" style="-fx-background-color: #87c1d4;" text="-&gt;" />
-                  <TextField fx:id="textField" layoutY="349.0" prefHeight="26.0" prefWidth="356.0" promptText="type message..." style="-fx-background-color: white; -fx-border-color: #215161; -fx-border-radius: 10; -fx-background-radius: 10;" />
-               </children>
-            </AnchorPane>
-         </content>
-      </ScrollPane>
-   </children>
-</GridPane>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainChatSceneController">
+   <content>
+      <AnchorPane prefHeight="398.0" prefWidth="398.0">
+         <children>
+            <TextField fx:id="textField" layoutX="4.0" layoutY="359.0" prefHeight="26.0" prefWidth="318.0" />
+            <Button layoutX="332.0" layoutY="359.0" mnemonicParsing="false" onAction="#sendMessage" text="Button" />
+            <ListView fx:id="messages" layoutX="4.0" layoutY="6.0" prefHeight="351.0" prefWidth="379.0" />
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

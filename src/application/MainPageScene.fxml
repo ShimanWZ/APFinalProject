@@ -15,12 +15,14 @@
       <Button layoutX="99.0" layoutY="403.0" mnemonicParsing="false" onAction="#chat" prefHeight="96.0" prefWidth="96.0" text="chat" />
       <HBox layoutY="94.0" prefHeight="306.0" prefWidth="350.0">
          <children>
-            <ListView fx:id="contactList" prefHeight="310.0" prefWidth="331.0" />
+            <ListView fx:id="contactList" onMouseClicked="#chooseContact" prefHeight="310.0" prefWidth="331.0" />
             <ScrollBar orientation="VERTICAL" prefHeight="339.0" prefWidth="18.0" />
          </children>
       </HBox>
-      <Button layoutX="268.0" layoutY="21.0" mnemonicParsing="false" onAction="#search" text="search" />
+      <Button layoutX="292.0" layoutY="20.0" mnemonicParsing="false" onAction="#search" text="search" />
       <Label layoutX="22.0" layoutY="68.0" text="contacts" />
       <Button layoutX="292.0" layoutY="473.0" mnemonicParsing="false" onAction="#logout" text="logout" />
+      <Button layoutX="243.0" layoutY="64.0" mnemonicParsing="false" onAction="#addContact" text="add to contacts" />
+      <Button layoutX="265.0" layoutY="20.0" mnemonicParsing="false" onAction="#exitSearchMode" prefHeight="18.0" prefWidth="22.0" text="x" />
    </children>
 </AnchorPane>

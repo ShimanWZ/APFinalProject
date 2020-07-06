@@ -58,7 +58,7 @@ public class Server extends Thread {
 		return clients;
 	}
 	//giving other users access to all other usernames.
-	public static ArrayList<String> getUsersArraylist(ObjectOutputStream objOut, ObjectInputStream objIn) throws IOException, ClassNotFoundException {
+	public static Object[] getUsersProperties(ObjectOutputStream objOut, ObjectInputStream objIn) throws IOException, ClassNotFoundException {
 		String[] command = new String[1];
 		command[0] = "getusers";
 		
@@ -66,7 +66,7 @@ public class Server extends Thread {
 		objOut.flush();
 		Object obj = objIn.readObject();
 		System.out.println("error cause:" + obj);
-		ArrayList<String> users = (ArrayList<String>)obj;
+		Object[] users = (Object[]) obj;
 		return users;
 	}
 }
