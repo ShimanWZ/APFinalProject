@@ -10,6 +10,8 @@ import java.util.LinkedList;
 
 import application.Main;
 import application.MainChatSceneController;
+import application.TicTacToeController;
+import games.TicTacToe;
 import javafx.application.Platform;
 import server.Server;
 
@@ -20,7 +22,8 @@ public class User implements Serializable {
 	private ArrayList<String> contacts  = new ArrayList<>();
 	private ArrayList<LinkedList<Message>> messages;
 	private transient static ArrayList<MessageListener> messageListener = new ArrayList<>();
-	private transient ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
+	private transient static ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
+	private transient OpponentMoveListener opponentMoveListener;
 	
 	
 	//----------------------------- constructor --------------------------//
@@ -33,6 +36,7 @@ public class User implements Serializable {
 		this.password = password;
 		this.emailAddress = emailAddress;
 		contacts  = new ArrayList<>();
+		messages = new ArrayList<>();
 	}
 	//--------------------------------------------------------------------------//
 	//------------------------- server related methods -------------------------//
@@ -82,12 +86,20 @@ public class User implements Serializable {
 			while ((commandArray = (String[])(objectIS.readObject())) != null) {
 				if (commandArray[0].equalsIgnoreCase("recieve")) {
 					handleRecievingMessage(commandArray);
+				}else if (commandArray[0].equalsIgnoreCase("online")) {
+					handleOnline(commandArray);
+				}else if (commandArray[0].equalsIgnoreCase("offline")) {
+					handleOffline(commandArray);
+				}else if (commandArray[0].equalsIgnoreCase("gameProperties")) {
+					System.out.println("properties recieved");
+					handleMoveProperties(commandArray);
 				}
 			}
 		} catch (IOException | ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
 	}
+	
 	private static void handleRecievingMessage(String[] commandArray) {
 		System.out.println(commandArray[1] + " : " + commandArray[2]);
 		for (MessageListener listener: messageListener) {
@@ -95,7 +107,25 @@ public class User implements Serializable {
 		}
 		System.out.println("added");
 	}
-	
+	private static void handleOffline(String[] commandArray) {
+		for (UserStatusListener listener : userStatusListeners) {
+			listener.offline(commandArray[1]);
+		}
+	}
+	private static void handleOnline(String[] commandArray) {
+		for (UserStatusListener listener : userStatusListeners) {
+			listener.online(commandArray[1]);
+		}
+	}
+	private static void handleMoveProperties(String[] commandArray) {
+		int i =Integer.parseInt(commandArray[1]);
+		int j = Integer.parseInt(commandArray[2]);
+		Main.getCurUser().getOpponentMoveListener().onMoveMade(i, j);
+		TicTacToe.setLastOponentI(i);
+		TicTacToe.setLastOponentJ(j);
+		TicTacToeController.propertiesRecieved = true;
+		System.out.println("properties recieved : " + commandArray[1] + commandArray[2]);
+	}
 	//--------------------------------------------------------------------------//
 	//----------------------------- getters and setters ------------------------//
 	//--------------------------------------------------------------------------//
@@ -176,5 +206,33 @@ public class User implements Serializable {
 	}
 	public void addContact(String contact) {
 		if (!this.contacts.contains(contact)) this.contacts.add(contact);
+	}
+	public ArrayList<LinkedList<Message>> getMessages() {
+		return messages;
+	}
+	public void addMessage(Message message, String otheUser) {
+		boolean isFirstChat = true;
+		for (LinkedList<Message> messageList : this.messages) {
+			boolean firstCondition = messageList.getFirst().getSender().equals(otheUser);
+			boolean secondCondition = messageList.getFirst().getReciever().equals(otheUser);
+			
+			if(firstCondition || secondCondition) {
+				messageList.add(message);
+				System.out.println("messageadded!!!");
+				isFirstChat = false;
+				break;
+			}
+		}
+		if (isFirstChat) {
+			LinkedList<Message> first = new LinkedList<Message>();
+			first.add(message);
+			this.messages.add(first);
+		}
+	}
+	public OpponentMoveListener getOpponentMoveListener() {
+		return opponentMoveListener;
+	}
+	public void setOpponentMoveListener(OpponentMoveListener opponentMoveListener) {
+		this.opponentMoveListener = opponentMoveListener;
 	}
 }

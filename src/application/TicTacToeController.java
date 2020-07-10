@@ -2,13 +2,13 @@ package application;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
-import base.User;
+import base.OpponentMoveListener;
 import fileHandling.WriteFile;
 import games.GamesUtils;
 import games.TicTacToe;
 import games.TicTacToeContent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import server.Server;
 
 public class TicTacToeController {
 	@FXML private AnchorPane pane;
@@ -24,22 +23,59 @@ public class TicTacToeController {
 	@FXML private Label lossCount;
 	private TicTacToe curGame = new TicTacToe();
 	private ArrayList<Object> boardContents = new ArrayList<Object>(); //this arraylist comes in handy when we want to clear the screen
+	public static boolean propertiesRecieved;
 	
-	
+	{
+		Main.getCurUser().setOpponentMoveListener(new OpponentMoveListener() {
+			@Override
+			public void onMoveMade(int i, int j) {
+				System.out.println("on move called!!");
+				curGame.setOpponentOnBord(i, j);
+				Platform.runLater(new Runnable() {
+			            @Override public void run() {
+							draw(i, j, 'O');
+			            }
+			    });
+				System.out.println("opponent drawn");
+				curGame.setMyTurn(true);
+				
+				if (curGame.getIfOpponentWon()) {
+					WriteFile.TicTacToeFile.writeWinsAndLosses(curGame);
+					Platform.runLater(new Runnable() {
+			            @Override public void run() {
+							reset();
+			            }
+					});
+					System.exit(0);
+				}
+			}
+		});
+	}
 	@FXML
 	private void clicked(MouseEvent event) throws IOException {
 		double curX = event.getSceneX(), curY = event.getSceneY();
 		int curI = GamesUtils.getTicTacToeI(curY), curJ = GamesUtils.getTicTacToeJ(curX);
 		
 		//checks if we clicked on the board
-		if (curI != -1 && curJ != -1) {
+		if (curI != -1 && curJ != -1 && curGame.isMyTurn()) {
 			//if it is placed, the computer turn will be called
+			System.out.println("in controller if");
 			if(curGame.setOnBoard(curI, curJ, TicTacToeContent.X)) {
+				System.out.println("mine set");
 				draw(curI, curJ, 'X');
-				curGame.oponentTurn();
-				draw(curGame.getLastOpponentI(), curGame.getLastOpponentJ(), 'O');
+				System.out.println("mine drawn");
+
+				curGame.setMyTurn(false);
+
+				if (Main.getIsGameWithAI()) {
+					curGame.oponentTurn();
+					draw(curGame.getLastOpponentI(), curGame.getLastOpponentJ(), 'O');
+					curGame.setMyTurn(true);
+					propertiesRecieved = false;
+				}
 			}
 		}
+		
 		
 		if (curGame.endOfGame()) {
 			WriteFile.TicTacToeFile.writeWinsAndLosses(curGame);
@@ -48,6 +84,7 @@ public class TicTacToeController {
 		}
 		
 	}
+	
 	@FXML
 	private void reset() {
 		for (Object o : boardContents) {
@@ -61,8 +98,8 @@ public class TicTacToeController {
 		
 		
 		
-		//winsCount.setText(Main.getCurUser().getTictactoeCompWins() + "");
-		//lossCount.setText(Main.getCurUser().getTictactoeCompLosses()+ "");
+		winsCount.setText(Main.getCurUser().getTictactoeCompWins() + "");
+		lossCount.setText(Main.getCurUser().getTictactoeCompLosses()+ "");
 		
 		
 		

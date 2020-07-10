@@ -13,16 +13,23 @@
       <TextField fx:id="searchbar" layoutX="22.0" layoutY="20.0" prefHeight="26.0" prefWidth="234.0" promptText="search users..." />
       <Button layoutX="2.0" layoutY="403.0" mnemonicParsing="false" onAction="#play" prefHeight="96.0" prefWidth="96.0" text="play" />
       <Button layoutX="99.0" layoutY="403.0" mnemonicParsing="false" onAction="#chat" prefHeight="96.0" prefWidth="96.0" text="chat" />
-      <HBox layoutY="94.0" prefHeight="306.0" prefWidth="350.0">
+      <HBox layoutY="268.0" prefHeight="125.0" prefWidth="350.0">
          <children>
-            <ListView fx:id="contactList" onMouseClicked="#chooseContact" prefHeight="310.0" prefWidth="331.0" />
+            <ListView fx:id="onlineUsers" onMouseClicked="#chooseContact" prefHeight="131.0" prefWidth="331.0" />
             <ScrollBar orientation="VERTICAL" prefHeight="339.0" prefWidth="18.0" />
          </children>
       </HBox>
       <Button layoutX="292.0" layoutY="20.0" mnemonicParsing="false" onAction="#search" text="search" />
-      <Label layoutX="22.0" layoutY="68.0" text="contacts" />
+      <Label layoutX="14.0" layoutY="97.0" text="contacts" />
       <Button layoutX="292.0" layoutY="473.0" mnemonicParsing="false" onAction="#logout" text="logout" />
       <Button layoutX="243.0" layoutY="64.0" mnemonicParsing="false" onAction="#addContact" text="add to contacts" />
       <Button layoutX="265.0" layoutY="20.0" mnemonicParsing="false" onAction="#exitSearchMode" prefHeight="18.0" prefWidth="22.0" text="x" />
+      <HBox layoutY="115.0" prefHeight="125.0" prefWidth="350.0">
+         <children>
+            <ListView fx:id="contactList" onMouseClicked="#chooseContact" prefHeight="131.0" prefWidth="331.0" />
+            <ScrollBar orientation="VERTICAL" prefHeight="339.0" prefWidth="18.0" />
+         </children>
+      </HBox>
+      <Label layoutX="8.0" layoutY="250.0" text="online contacts" />
    </children>
 </AnchorPane>

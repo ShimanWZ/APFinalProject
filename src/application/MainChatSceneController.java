@@ -2,8 +2,13 @@ package application;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
 
+import base.Message;
 import base.MessageListener;
+import base.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -12,12 +17,20 @@ import javafx.scene.layout.AnchorPane;
 public class MainChatSceneController {
 	@FXML private TextField textField;
 	@FXML private ListView<String> messages;
+	private boolean init = true;
 	
 	{
 		Main.getCurUser().addMessageListener(new MessageListener() {
 			@Override
 			public void onMessage(String user, String message) {
-				if (user.equalsIgnoreCase(Main.getContact())) messages.getItems().add(user + " : " + message);
+				if (user.equalsIgnoreCase(Main.getContact())) {
+					Platform.runLater(new Runnable() {
+			            @Override public void run() {
+							messages.getItems().add(user + " : " + message);
+			            }
+					});
+					setMessageOnRead();
+				}
 			}
 		});
 	}
@@ -34,6 +47,8 @@ public class MainChatSceneController {
 			objOut.writeObject(command);
 			objOut.flush();
 			messages.getItems().add("you : " + message);
+			Main.getCurUser().addMessage(new Message(Main.getCurUser().getUsername(), to, message), to);
+			setMessageOnRead();
 			textField.setText("");
 		}
 	}
@@ -48,4 +63,41 @@ public class MainChatSceneController {
 	public void addMessage(String s){
 		messages.getItems().add(s);
 	}
+	@FXML private void initializingMessages() {
+		if (init) {
+			System.out.println("in intiing");
+			for (LinkedList<Message> messages : Main.getCurUser().getMessages()) {
+				
+				boolean firstCondition = messages.getFirst().getSender().equals(Main.getContact());
+				boolean secondCondition = messages.getFirst().getReciever().equals(Main.getContact());
+				
+				if (firstCondition || secondCondition) {
+					System.out.println("one of the conditions matches");
+					Iterator<Message> iterator = messages.iterator();
+					while (iterator.hasNext()) {
+						Message curMessage = iterator.next();
+						if (curMessage.getSender().equals(Main.getCurUser().getUsername())) {
+							this.messages.getItems().add("you : " + curMessage.getText());
+						}
+						else this.messages.getItems().add(curMessage.getSender() + " : " + curMessage.getText());
+						
+						curMessage.setRead(true);
+					}				
+				}				
+			}
+			init = false;
+		}
+	}
+	private void setMessageOnRead() {
+		User user = Main.getCurUser();
+		for (LinkedList<Message> messages : user.getMessages()) {
+			if (messages.getFirst().getSender().equals(Main.getContact()) || messages.getFirst().getReciever().equals(Main.getContact())) {
+				Iterator<Message> iterator = messages.iterator();
+				while (iterator.hasNext()) {
+					iterator.next().setRead(true);
+				}
+			}
+		}
+	}
 }
+

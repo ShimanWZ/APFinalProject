@@ -1,13 +1,21 @@
 package games;
 
+import java.io.IOException;
+import application.Main;
+import application.TicTacToeController;
+
 public class TicTacToe {
 	private TicTacToeContent[][] board;
 	private TicTacToeContent computer = TicTacToeContent.O,opponent = TicTacToeContent.O, player = TicTacToeContent.X;
 	private boolean EOGame = false;
 	private boolean playerWin = false;
-	private boolean AI = true;
+	private boolean AI = Main.getIsGameWithAI();
+	public boolean isAI() {
+		return AI;
+	}
+	private boolean myTurn = true;
 	private int winner = 0; // if the current player is the winner this variable will be 1
-	private int lastOpponentI, lastOpponentJ;
+	private static int lastOpponentI = -1, lastOpponentJ = -1;
 	
 	
 	public TicTacToe() {
@@ -18,8 +26,7 @@ public class TicTacToe {
 	
 	public void oponentTurn() {
 		
-		if (AI) {
-			bestMove bestMove = findBestMove(board); 
+		bestMove bestMove = findBestMove(board); 
 			  
 			lastOpponentI = bestMove.bestI;
 			lastOpponentJ = bestMove.bestJ;
@@ -30,17 +37,26 @@ public class TicTacToe {
 				winner = -1;
 				System.out.println("Game over!");
 			}
-		} else {
-			
-		}
 		
 	}
-	
-	
+	public boolean getIfOpponentWon() {
+		if (checkForWin()) {
+			winner = -1;
+			System.out.println("Game over!");
+			return true;
+		}
+		return false;
+	}
+	public void setOpponentOnBord(int curI, int curJ) {
+		board[curI][curJ] = TicTacToeContent.O;
+	}
 	public boolean setOnBoard(int curI, int curJ, TicTacToeContent content) {
 		if (isValid(curI, curJ) && !EOGame) {
 			
 			board[curI][curJ] = content;
+			System.out.println("set");
+			System.out.println(AI);
+			if (!AI) sendProperties(curI, curJ);
 			if (checkForWin()) {
 				System.out.println("U won!");
 				playerWin = true;
@@ -52,6 +68,18 @@ public class TicTacToe {
 	}
 	
 	
+	private void sendProperties(int curI, int curJ)  {
+		String[] s = {"gameProperties", Main.getContact(), curI + "", curJ + ""};
+		try {
+			Main.getObjOut().writeObject(s);
+			Main.getObjOut().flush();
+			System.out.println("properties sent!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	private boolean checkForWin() {
 		if((board[0][0] == board[0][1] && board[0][0] == board[0][2] && board[0][0] != null) 
 		|| (board[1][0] == board[1][1] && board[1][0] == board[1][2] && board[1][0] != null) 
@@ -75,7 +103,7 @@ public class TicTacToe {
 		return false;
 	}
 	private boolean isValid(int i, int j) {
-		if(board[i][j] == null) return true;
+		if(board[i][j] == null && (i!= lastOpponentI || j != lastOpponentJ)) return true;
 		return false;
 	}
 	private boolean isBoardFull() {
@@ -97,6 +125,12 @@ public class TicTacToe {
 	}
 	public int getLastOpponentI() {
 		return lastOpponentI;
+	}
+	public static void setLastOponentI(int lastI) {
+		lastOpponentI = lastI;
+	}
+	public static void setLastOponentJ(int lastJ) {
+		lastOpponentJ = lastJ;
 	}
 	public int getWinner() {
 		return winner;
@@ -240,5 +274,26 @@ public class TicTacToe {
 	        } 
 	    }
 	    return bestMove; 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public boolean isMyTurn() {
+		return myTurn;
+	}
+
+
+	public void setMyTurn(boolean myTurn) {
+		this.myTurn = myTurn;
 	}
 }

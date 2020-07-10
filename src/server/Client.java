@@ -9,8 +9,11 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 
+import application.Main;
+import base.Message;
 import base.User;
 import base.UserStatusListener;
 import fileHandling.WriteFile;
@@ -62,8 +65,15 @@ public class Client extends Thread{
 					handleSendingMessage(commandArray);
 				}else if(commandArray[0].equalsIgnoreCase("logout")) {
 					handleLogOut();
+					handleOffline();
 				}else if(commandArray[0].equalsIgnoreCase("addcontact")) {
 					handleAddingContact(commandArray);
+				}else if (commandArray[0].equalsIgnoreCase("online")) {
+					handleOnline(commandArray[1]);
+				}else if(commandArray[0].equalsIgnoreCase("deleteMsges")) {
+					handleDeletingMassege(commandArray);
+				}else if(commandArray[0].equalsIgnoreCase("gameProperties")) {
+					handleRecievingProperties(commandArray);
 				}
 			}
 		} catch (IOException | ClassNotFoundException e1) {
@@ -71,8 +81,19 @@ public class Client extends Thread{
 		}
 	}
 	
-	
-	
+	private void handleRecievingProperties(String[] commandArray) throws IOException {
+		String reciever = commandArray[1];
+		for (Client client: server.getClients()) {
+			if (client.getUsername().equals(reciever)){
+				String[] command = new String[3];
+				command[0] = commandArray[0];
+				command[1] = commandArray[2];
+				command[2] = commandArray[3];
+				client.getObjectOS().writeObject(command);
+				client.getObjectOS().flush();
+			}
+		}
+	}
 	//----------------------------helper methods---------------------------------//
 	private void handleSignup() throws ClassNotFoundException, IOException {
 		User temp = (User) objectIS.readObject();
@@ -95,7 +116,7 @@ public class Client extends Thread{
 			String pass = curUser.getPassword();
 			if (pass.equals(password)) {
 				this.username = username;
-				outputStream.write("ok\n".getBytes());
+				outputStream.write("ok\n".getBytes());				
 			}else {
 				outputStream.write("wrongPass\n".getBytes());
 			}
@@ -127,17 +148,18 @@ public class Client extends Thread{
 		objectOS.flush();
 	}
 	private void handleSendingMessage(String[] commandArray) throws IOException {
-		String from = commandArray[1];
+		String sender = commandArray[1];
 		String reciever = commandArray[2];
 		String message = commandArray[3];
-		
+		handleSavingMessage(sender, reciever, message);
 		for (Client client: server.getClients()) {
 			if (client.getUsername().equals(reciever)){
 				String[] command = new String[3];
 				command[0] = "recieve";
-				command[1] = from;
+				command[1] = sender;
 				command[2] = message;
 				client.getObjectOS().writeObject(command);
+				client.getObjectOS().flush();
 			}
 		}
 	}
@@ -154,6 +176,74 @@ public class Client extends Thread{
 		WriteFile.UsersFile.writeUsers(server.getUsers());
 		System.out.println("contact added");
 	}
+	private void handleSavingMessage(String sender, String reciever, String text){
+		Message message = new Message(sender, reciever, text);
+		System.out.println("messageCreated!");
+		boolean flag1 = false, flag2 = false;
+		for (Map.Entry entry : server.getUsers().entrySet()) {
+			System.out.println("looping... " + entry.getKey());
+			if (entry.getKey().equals(sender)) {
+				User senderUser =(User)entry.getValue();
+				senderUser.addMessage(message, reciever);
+				flag1 = true;
+				System.out.println("firstif");
+			}
+			else if (entry.getKey().equals(reciever)) {
+				User recieverUser =(User)entry.getValue();
+				recieverUser.addMessage(message, sender);
+				flag2 = true;
+				System.out.println("second if");
+			}
+			if (flag1 && flag2) {
+				System.out.println("exit looping");
+				break;
+			}
+		}
+		WriteFile.UsersFile.writeUsers(server.getUsers());
+	}
+	private void handleOffline() throws IOException {
+		for (Client client : server.getClients()) {
+			String[] command = {"offline", this.username};
+			client.getObjectOS().writeObject(command);
+			client.getObjectOS().flush();
+		}
+	}
+	private void handleOnline(String username) throws IOException {
+		String[] command = {"online", username};
+		for (Client client : server.getClients()) {
+			if (!client.equals(this)) {
+				client.getObjectOS().writeObject(command);
+				client.getObjectOS().flush();
+			}
+		}
+	}
+	private void handleDeletingMassege(String[] commandArray) {
+		for (Map.Entry entry : server.getUsers().entrySet()) {
+			if (entry.getKey().equals(commandArray[1])) {
+				User thisuser = (User) entry.getValue();
+				LinkedList<Message> target = null;
+				for(LinkedList<Message> privateChat : thisuser.getMessages()) {
+					if (privateChat.getFirst().getReciever().equalsIgnoreCase(commandArray[2]) 
+							|| privateChat.getFirst().getSender().equalsIgnoreCase(commandArray[2])) {
+						target = privateChat;
+					}
+				}
+				thisuser.getMessages().remove(target);
+			}
+			else if (entry.getKey().equals(commandArray[2])) {
+				User thisuser = (User) entry.getValue();
+				LinkedList<Message> target = null;
+				for(LinkedList<Message> privateChat : thisuser.getMessages()) {
+					if (privateChat.getFirst().getReciever().equalsIgnoreCase(commandArray[1]) 
+							|| privateChat.getFirst().getSender().equalsIgnoreCase(commandArray[1])) {
+						target = privateChat;
+					}
+				}
+				thisuser.getMessages().remove(target);
+			}
+		}
+	}
+	
 	//---------------------------------------------getter methods-----------------------------------//
 	public ObjectOutputStream getObjectOS() {
 		return this.objectOS;

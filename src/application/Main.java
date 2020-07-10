@@ -38,6 +38,8 @@ public class Main extends Application {
 	public static Stage window, game;
 	public static Scene main, tictactoe, signup, forgetPassword, chatScene, mainScene;
 	
+	private static boolean isGameWithAI = true;
+	
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -112,5 +114,11 @@ public class Main extends Application {
 	}
 	public static void setContact(String contact) {
 		Main.contact = contact;
+	}
+	public static boolean getIsGameWithAI() {
+		return isGameWithAI;
+	}
+	public static void setGameWithAI(boolean isGameWithAI) {
+		Main.isGameWithAI = isGameWithAI;
 	}
 }

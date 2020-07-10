@@ -41,7 +41,7 @@ public class ReadFile {
 				objectInputStream.close();
 				return users;
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				return new HashMap<String, User>();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {

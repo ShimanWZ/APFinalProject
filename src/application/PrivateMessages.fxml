@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="350.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="application.PrivateMessagesController">
+   <children>
+      <ScrollPane onMouseMoved="#initializeChats" prefHeight="451.0" prefWidth="350.0">
+         <content>
+            <GridPane prefHeight="451.0" prefWidth="333.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="281.4000244140625" minWidth="10.0" prefWidth="279.79998779296875" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.20001220703125" minWidth="10.0" prefWidth="54.20001220703125" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ListView fx:id="chatList" onMouseClicked="#choosePrivateMEssage" onMouseMoved="#initializeChats" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="unreadCount" prefHeight="450.0" prefWidth="37.0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+      <Button layoutX="285.0" layoutY="461.0" mnemonicParsing="false" text="back" />
+      <Button layoutX="137.0" layoutY="461.0" mnemonicParsing="false" onAction="#deletePrivateMessage" text="delete selected chat" />
+      <Button layoutX="14.0" layoutY="461.0" mnemonicParsing="false" text="start new chat..." />
+   </children>
+</AnchorPane>
