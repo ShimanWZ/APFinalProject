@@ -5,31 +5,79 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane onMouseMoved="#load" prefHeight="500.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainPageController">
+<AnchorPane onMouseMoved="#load" prefHeight="500.0" prefWidth="344.0" style="-fx-background-color: #f2AA4cff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainPageController">
    <children>
-      <TextField fx:id="searchbar" layoutX="22.0" layoutY="20.0" prefHeight="26.0" prefWidth="234.0" promptText="search users..." />
-      <Button layoutX="2.0" layoutY="403.0" mnemonicParsing="false" onAction="#play" prefHeight="96.0" prefWidth="96.0" text="play" />
-      <Button layoutX="99.0" layoutY="403.0" mnemonicParsing="false" onAction="#chat" prefHeight="96.0" prefWidth="96.0" text="chat" />
-      <HBox layoutY="268.0" prefHeight="125.0" prefWidth="350.0">
+      <TextField fx:id="searchbar" layoutX="7.0" layoutY="20.0" prefHeight="26.0" prefWidth="255.0" promptText="search users..." style="-fx-background-color: #101820ff; -fx-prompt-text-fill: #f2AA4cff; -fx-background-radius: 10; -fx-opacity: 0.8; -fx-text-fill: #f2AA4cff;" />
+      <Button layoutX="2.0" layoutY="399.0" mnemonicParsing="false" onAction="#play" prefHeight="96.0" prefWidth="96.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="play">
+         <graphic>
+            <ImageView fitHeight="54.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Game-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font></Button>
+      <Button layoutX="104.0" layoutY="399.0" mnemonicParsing="false" onAction="#chat" prefHeight="96.0" prefWidth="174.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-background-radius: 5; -fx-border-radius: 5;" text="private chats">
+         <graphic>
+            <ImageView fitHeight="37.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Messaging-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font></Button>
+      <Button layoutX="273.0" layoutY="17.0" mnemonicParsing="false" onAction="#search" prefHeight="32.0" prefWidth="38.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="22.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../search-icon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Label layoutX="12.0" layoutY="54.0" text="contacts" textFill="#101820">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font></Label>
+      <Button layoutX="291.0" layoutY="471.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: #101820ff; -fx-background-radius: 8;" text="logout" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="11.0" />
+         </font></Button>
+      <Button fx:id="addContacts" disable="true" layoutX="215.0" layoutY="357.0" mnemonicParsing="false" onAction="#addContact" style="-fx-background-color: #101820ff; -fx-background-radius: 10;" text="add to contacts" textFill="#f2aa4c" />
+      <Button layoutX="311.0" layoutY="17.0" mnemonicParsing="false" onAction="#exitSearchMode" prefHeight="32.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../cancel-icon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <HBox layoutY="84.0" prefHeight="265.0" prefWidth="350.0">
          <children>
-            <ListView fx:id="onlineUsers" onMouseClicked="#chooseContact" prefHeight="131.0" prefWidth="331.0" />
-            <ScrollBar orientation="VERTICAL" prefHeight="339.0" prefWidth="18.0" />
+            <ListView fx:id="contactList" onMouseClicked="#chooseContact" prefHeight="266.0" prefWidth="371.0" style="-fx-border-color: #101820; -fx-background-color: #f2AA4cff;" />
+            <ScrollBar orientation="VERTICAL" prefHeight="248.0" prefWidth="18.0" style="-fx-border-color: #101820; -fx-background-color: #f2AA4cff;" stylesheets="@application.css" />
          </children>
       </HBox>
-      <Button layoutX="292.0" layoutY="20.0" mnemonicParsing="false" onAction="#search" text="search" />
-      <Label layoutX="14.0" layoutY="97.0" text="contacts" />
-      <Button layoutX="292.0" layoutY="473.0" mnemonicParsing="false" onAction="#logout" text="logout" />
-      <Button layoutX="243.0" layoutY="64.0" mnemonicParsing="false" onAction="#addContact" text="add to contacts" />
-      <Button layoutX="265.0" layoutY="20.0" mnemonicParsing="false" onAction="#exitSearchMode" prefHeight="18.0" prefWidth="22.0" text="x" />
-      <HBox layoutY="115.0" prefHeight="125.0" prefWidth="350.0">
-         <children>
-            <ListView fx:id="contactList" onMouseClicked="#chooseContact" prefHeight="131.0" prefWidth="331.0" />
-            <ScrollBar orientation="VERTICAL" prefHeight="339.0" prefWidth="18.0" />
-         </children>
-      </HBox>
-      <Label layoutX="8.0" layoutY="250.0" text="online contacts" />
+      <Button layoutX="285.0" layoutY="399.0" mnemonicParsing="false" onAction="#playAI" prefHeight="61.0" prefWidth="58.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="AI">
+         <graphic>
+            <ImageView fitHeight="31.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Game-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

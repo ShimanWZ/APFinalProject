@@ -74,6 +74,8 @@ public class Client extends Thread{
 					handleDeletingMassege(commandArray);
 				}else if(commandArray[0].equalsIgnoreCase("gameProperties")) {
 					handleRecievingProperties(commandArray);
+				}else if(commandArray[0].equalsIgnoreCase("gameFinished")) {
+					handleGameFinished(commandArray);
 				}
 			}
 		} catch (IOException | ClassNotFoundException e1) {
@@ -81,6 +83,23 @@ public class Client extends Thread{
 		}
 	}
 	
+	private void handleGameFinished(String[] commandArray) {
+		User thisUser = server.getUsers().get(this.getUsername());
+		if (commandArray[1].equalsIgnoreCase("true")) {
+			if (commandArray[2].equalsIgnoreCase("true")) {
+				thisUser.setTictactoeCompWins(thisUser.getTictactoeCompWins() + 1);
+			}else {
+				thisUser.setTictactoePlayWins(thisUser.getTictactoePlayWins() + 1);
+			}
+		}else {
+			if (commandArray[2].equalsIgnoreCase("true")) {
+				thisUser.setTictactoeCompLosses(thisUser.getTictactoeCompLosses() + 1);
+			}else {
+				thisUser.setTictactoePlayLosses(thisUser.getTictactoePlayLosses() + 1);
+			}
+		}
+		WriteFile.UsersFile.writeUsers(server.getUsers());
+	}
 	private void handleRecievingProperties(String[] commandArray) throws IOException {
 		String reciever = commandArray[1];
 		for (Client client: server.getClients()) {

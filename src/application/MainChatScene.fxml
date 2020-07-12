@@ -4,15 +4,24 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainChatSceneController">
    <content>
-      <AnchorPane prefHeight="398.0" prefWidth="398.0">
+      <AnchorPane prefHeight="398.0" prefWidth="398.0" style="-fx-background-color: #f2AA4cff;">
          <children>
-            <TextField fx:id="textField" layoutX="4.0" layoutY="359.0" prefHeight="26.0" prefWidth="318.0" />
-            <Button layoutX="332.0" layoutY="359.0" mnemonicParsing="false" onAction="#sendMessage" text="Button" />
-            <ListView fx:id="messages" layoutX="4.0" layoutY="6.0" onMouseMoved="#initializingMessages" prefHeight="351.0" prefWidth="379.0" />
+            <Button layoutX="338.0" layoutY="355.0" mnemonicParsing="false" onAction="#sendMessage" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../send.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <ListView fx:id="messages" layoutX="4.0" layoutY="6.0" onMouseMoved="#initializingMessages" prefHeight="351.0" prefWidth="379.0" style="-fx-background-color: #f2AA4cff;" />
+            <TextField fx:id="textField" layoutX="4.0" layoutY="359.0" prefHeight="26.0" prefWidth="333.0" promptText="start messaging..." style="-fx-background-color: #101820ff; -fx-background-radius: 10; -fx-text-fill: #f2AA4cff; -fx-prompt-text-fill: #f2AA4cff;" />
          </children>
       </AnchorPane>
    </content>

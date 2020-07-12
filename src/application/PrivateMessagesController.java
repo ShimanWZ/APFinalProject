@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import base.Message;
+import base.MessageListener;
 import base.User;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,12 +20,27 @@ import javafx.stage.Stage;
 public class PrivateMessagesController {
 	@FXML ListView<Message> chatList;
 	@FXML ListView<Integer> unreadCount;
-	
 	private boolean init = false;
+	
+	{
+		Main.getCurUser().addMessageListener(new MessageListener() {
+			
+			@Override
+			public void onMessage(String user, String message) {
+				init = false;
+				Platform.runLater(new Runnable() {
+		            @Override public void run() {
+		            	initializeChats();
+		            }
+				});
+			}
+		});
+	}
 	
 	@FXML private void initializeChats() {
 		if (!init) {
 			chatList.getItems().clear();
+			unreadCount.getItems().clear(); 
 			User thisUser = Main.getCurUser();
 			ArrayList<LinkedList<Message>> messages = thisUser.getMessages();
 			
@@ -63,6 +80,8 @@ public class PrivateMessagesController {
 			}
 		}
 		Main.getCurUser().getMessages().remove(target);
+		init = false;
+		initializeChats();
 	}
 	private Integer countUnread(LinkedList<Message> privateChat) {
 		Iterator<Message> iterator = privateChat.iterator();

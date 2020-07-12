@@ -35,7 +35,13 @@ public class Main extends Application {
 	private static ObjectOutputStream objOut;
 	private static ObjectInputStream objIn;
 	
-	public static Stage window, game;
+	public static Stage getGameStage() {
+		return game;
+	}
+	public static void setGameStage(Stage game) {
+		Main.game = game;
+	}
+	public static Stage window, game = new Stage();
 	public static Scene main, tictactoe, signup, forgetPassword, chatScene, mainScene;
 	
 	private static boolean isGameWithAI = true;

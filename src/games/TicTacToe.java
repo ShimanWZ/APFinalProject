@@ -6,15 +6,12 @@ import application.TicTacToeController;
 
 public class TicTacToe {
 	private TicTacToeContent[][] board;
-	private TicTacToeContent computer = TicTacToeContent.O,opponent = TicTacToeContent.O, player = TicTacToeContent.X;
+	private TicTacToeContent computer = TicTacToeContent.O, player = TicTacToeContent.X;
 	private boolean EOGame = false;
 	private boolean playerWin = false;
 	private boolean AI = Main.getIsGameWithAI();
-	public boolean isAI() {
-		return AI;
-	}
 	private boolean myTurn = true;
-	private int winner = 0; // if the current player is the winner this variable will be 1
+	private int winner = -2; // if the current player is the winner this variable will be 1
 	private static int lastOpponentI = -1, lastOpponentJ = -1;
 	
 	
@@ -24,7 +21,7 @@ public class TicTacToe {
 	}
 	
 	
-	public void oponentTurn() {
+	public void oponentTurn() throws IOException {
 		
 		bestMove bestMove = findBestMove(board); 
 			  
@@ -35,31 +32,35 @@ public class TicTacToe {
 			
 			if (checkForWin()) {
 				winner = -1;
+				sendGameProperties(-1, true);
 				System.out.println("Game over!");
 			}
 		
 	}
-	public boolean getIfOpponentWon() {
+	
+	public boolean getIfOpponentWon() throws IOException {
 		if (checkForWin()) {
 			winner = -1;
+			sendGameProperties(-1, false);
 			System.out.println("Game over!");
 			return true;
 		}
 		return false;
 	}
+	
 	public void setOpponentOnBord(int curI, int curJ) {
 		board[curI][curJ] = TicTacToeContent.O;
 	}
-	public boolean setOnBoard(int curI, int curJ, TicTacToeContent content) {
+	public boolean setOnBoard(int curI, int curJ, TicTacToeContent content) throws IOException {
 		if (isValid(curI, curJ) && !EOGame) {
 			
 			board[curI][curJ] = content;
-			System.out.println("set");
-			System.out.println(AI);
+
 			if (!AI) sendProperties(curI, curJ);
 			if (checkForWin()) {
 				System.out.println("U won!");
 				playerWin = true;
+				sendGameProperties(1, AI);
 				winner = 1;
 			}
 			return true;
@@ -114,9 +115,6 @@ public class TicTacToe {
 		}
 		return true;
 	}
-
-	
-	
 	public boolean endOfGame() {
 		return EOGame;
 	}
@@ -137,7 +135,42 @@ public class TicTacToe {
 	}
 	public void setAI(boolean aI) {
 		AI = aI;
-	} 
+	}	
+	public boolean isAI() {
+		return AI;
+	}
+	public boolean isMyTurn() {
+		return myTurn;
+	}
+	public void setMyTurn(boolean myTurn) {
+		this.myTurn = myTurn;
+	}
+	public static void sendGameProperties(int isWinner, boolean AI) throws IOException {
+		String[] command = new String[3];
+		if (isWinner == 1) {
+			if(AI) {
+				command = generateCommand("true" , "true");
+			}else {
+				command = generateCommand("true" , "false");
+			}
+		} else if (isWinner == -1) {
+			if(AI) {
+				command = generateCommand("false" , "true");
+			}else {
+				command = generateCommand("false" , "false");
+			}
+		}
+		Main.getObjOut().writeObject(command);
+		Main.getObjOut().flush();
+	}
+	private static String[] generateCommand(String isWinner, String AI) {
+
+		String[] command = new String[3];
+		command[0] = "gameFinished";
+		command[1] = isWinner;
+		command[2] = AI;
+		return command;
+	}
 	//---------------------------------AI related methods -------------------------------//
 	private class bestMove{ 
 	    int bestI, bestJ; 
@@ -274,26 +307,5 @@ public class TicTacToe {
 	        } 
 	    }
 	    return bestMove; 
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public boolean isMyTurn() {
-		return myTurn;
-	}
-
-
-	public void setMyTurn(boolean myTurn) {
-		this.myTurn = myTurn;
 	}
 }

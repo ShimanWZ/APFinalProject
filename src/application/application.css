@@ -1,39 +1,73 @@
-.scroll-pane {
-    -fx-background-color:  #87c1d4;
-}
 
-.scroll-bar:horizontal, .scroll-bar:vertical{
-    -fx-background-color: #87c1d4;
-}
 
-.increment-button, .decrement-button {
-    -fx-background-color:  #87c1d4;
-    -fx-border-color:  #87c1d4;
-}
+.choice-box .context-menu { -fx-background-color:  #f2AA4cff; }
+
+.choice-box .menu-item:focused { -fx-background-color:  #101820ff; }
+
+.choice-box .menu-item > .label { -fx-text-fill:  #101820; }
+
+.choice-box .menu-item:focused > .label { -fx-text-fill:  #f2AA4c; }
+
+
 
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
-    -fx-background-color:  #87c1d4;
-    -fx-border-color:  #87c1d4;
-    -fx-background-radius: 0em;
+    -fx-background-color :#f2AA4c;
+    -fx-border-color :#f2AA4c;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 0.0 10.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+ .scroll-bar .increment-arrow,
+ .scroll-bar .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.15em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
 }
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
-    -fx-background-color:  #215161;
-    -fx-background-radius: 5em;
+    -fx-background-color :derive(#101820,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
 }
+.scroll-pane > .corner {
+    -fx-background-color: #f2AA4c;
+}
+
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
-    -fx-text-fill: #215161;
+    -fx-background-color: linear-gradient( #101820 0%,  #101820 25%,  #101820 75%,  #101820 100%);
+    -fx-text-fill:  #f2AA4c;
 }
 
 .list-cell {
-    -fx-cell-hover-color: #0093ff;
-    -fx-background-color: white;
+    -fx-cell-hover-color:  #f2AA4c;
+    -fx-background-color:  #f2AA4c;
 }
 
 .list-cell:filled:hover {
-    -fx-cell-hover-color: #0093ff;
-    -fx-text-fill: #215161;
+    -fx-cell-hover-color:  #f2AA4c;
+    -fx-text-fill:  #101820;
 }

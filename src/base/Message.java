@@ -32,7 +32,7 @@ public class Message implements Serializable{
 	public String toString() {
 		User curUser = Main.getCurUser();
 		if (this.sender.equalsIgnoreCase(curUser.getUsername())) 
-			return  this.reciever + " \n " + "	you : "+ this.text;
+			return this.reciever + " \n " + "	you : "+ this.text;
 		return  this.sender + " \n	 " + this.sender+ " : " + this.text;
 	}
 }

@@ -8,10 +8,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="350.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="application.PrivateMessagesController">
+<AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PrivateMessagesController">
    <children>
-      <ScrollPane onMouseMoved="#initializeChats" prefHeight="451.0" prefWidth="350.0">
+      <ScrollPane onMouseMoved="#initializeChats" prefHeight="451.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c; -fx-border-color: -fx-background-color: #f2AA4c;" stylesheets="@application.css">
          <content>
             <GridPane prefHeight="451.0" prefWidth="333.0">
               <columnConstraints>
@@ -22,14 +21,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ListView fx:id="chatList" onMouseClicked="#choosePrivateMEssage" onMouseMoved="#initializeChats" prefHeight="200.0" prefWidth="200.0" />
-                  <ListView fx:id="unreadCount" prefHeight="450.0" prefWidth="37.0" GridPane.columnIndex="1" />
+                  <ListView fx:id="chatList" onMouseClicked="#choosePrivateMEssage" onMouseMoved="#initializeChats" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f2AA4c; -fx-border-color: #f2AA4c;" />
+                  <ListView fx:id="unreadCount" prefHeight="450.0" prefWidth="37.0" style="-fx-background-color: #f2AA4c; -fx-border-color: #f2AA4c; -fx-fixed-cell-size: 50;" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </content>
       </ScrollPane>
-      <Button layoutX="285.0" layoutY="461.0" mnemonicParsing="false" text="back" />
-      <Button layoutX="137.0" layoutY="461.0" mnemonicParsing="false" onAction="#deletePrivateMessage" text="delete selected chat" />
-      <Button layoutX="14.0" layoutY="461.0" mnemonicParsing="false" text="start new chat..." />
+      <Button layoutX="246.0" layoutY="461.0" mnemonicParsing="false" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="back" textFill="#f2aa4c" />
+      <Button layoutX="45.0" layoutY="461.0" mnemonicParsing="false" onAction="#deletePrivateMessage" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="delete selected chat" textFill="#f2aa4c" />
    </children>
 </AnchorPane>
