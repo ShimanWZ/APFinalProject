@@ -55,7 +55,7 @@ public class LoginHandler {
 			User.messageReader();
 			
 			//changing scene
-			Parent root = FXMLLoader.load(getClass().getResource("MainPageScene.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("PrivateMessages.fxml"));
 			Main.mainScene = new Scene(root);
 			Main.mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Main.window.setTitle(userName);

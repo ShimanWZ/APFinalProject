@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PrivateMessagesController">
+<AnchorPane maxHeight="537.0" maxWidth="350.0" minHeight="537.0" minWidth="350.0" prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.PrivateMessagesController">
    <children>
-      <ScrollPane onMouseMoved="#initializeChats" prefHeight="451.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c; -fx-border-color: -fx-background-color: #f2AA4c;" stylesheets="@application.css">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="52.0" stroke="#101820" strokeType="INSIDE" width="350.0" />
+      <ImageView fitHeight="60.0" fitWidth="70.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../logo.png" />
+         </image>
+      </ImageView>
+      <ScrollPane layoutY="52.0" onMouseMoved="#initializeChats" prefHeight="354.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c; -fx-border-color: -fx-background-color: #f2AA4c;" stylesheets="@application.css">
          <content>
-            <GridPane prefHeight="451.0" prefWidth="333.0">
+            <GridPane prefHeight="354.0" prefWidth="334.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="281.4000244140625" minWidth="10.0" prefWidth="279.79998779296875" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.20001220703125" minWidth="10.0" prefWidth="54.20001220703125" />
@@ -27,7 +38,69 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <Button layoutX="246.0" layoutY="461.0" mnemonicParsing="false" onAction="#back" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="back" textFill="#f2aa4c" />
-      <Button layoutX="45.0" layoutY="461.0" mnemonicParsing="false" onAction="#deletePrivateMessage" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="delete selected chat" textFill="#f2aa4c" />
+      <Button layoutX="14.0" layoutY="413.0" mnemonicParsing="false" onAction="#deletePrivateMessage" prefHeight="32.0" prefWidth="204.0" style="-fx-border-color: #101820ff; -fx-background-color: transparent; -fx-background-radius: 10; -fx-border-radius: 5;" text="delete selected chat" textFill="#312c2c">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../trash-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font></Button>
+      <Label fx:id="username" layoutX="70.0" layoutY="12.0" text="loading..." textFill="#f2aa4c">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button layoutX="14.0" layoutY="452.0" mnemonicParsing="false" onAction="#playAI" prefHeight="72.0" prefWidth="82.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="AI">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Game-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="107.0" layoutY="452.0" mnemonicParsing="false" onAction="#changeToContactsScene" prefHeight="72.0" prefWidth="109.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="contacts">
+         <graphic>
+            <ImageView fitHeight="29.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../contacts.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="226.0" layoutY="452.0" mnemonicParsing="false" onAction="#logout" prefHeight="72.0" prefWidth="109.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="Logout">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../User-Interface-Logout-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="225.0" layoutY="413.0" mnemonicParsing="false" onAction="#playAI" prefHeight="28.0" prefWidth="110.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="setting">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../settings-icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

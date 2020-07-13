@@ -5,55 +5,45 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane onMouseMoved="#loadChoiceBoxItems" prefHeight="350.0" prefWidth="500.0" style="-fx-background-color: #f2AA4cff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SignupHandler">
+<AnchorPane maxHeight="537.0" maxWidth="350.0" minHeight="537.0" minWidth="350.0" onMouseMoved="#loadChoiceBoxItems" prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2AA4cff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SignupHandler">
    <children>
-      <Label layoutX="27.0" layoutY="96.0" text="username : " textFill="#101820">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="209.0" stroke="#101820" strokeType="INSIDE" width="350.0" />
+      <TextField fx:id="username" layoutX="50.0" layoutY="230.0" prefHeight="27.0" prefWidth="250.0" promptText="username" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <TextField fx:id="emailAddress" layoutX="49.0" layoutY="355.0" prefHeight="27.0" prefWidth="250.0" promptText="email" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <Label layoutX="206.0" layoutY="174.0" text="SIGN UP" textFill="#f2aa4c">
          <font>
-            <Font name="Arial Rounded MT Bold" size="17.0" />
+            <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>
       </Label>
-      <Label layoutX="27.0" layoutY="211.0" text="email address : " textFill="#101820">
+      <Button layoutX="54.0" layoutY="468.0" mnemonicParsing="false" onAction="#signup" prefHeight="27.0" prefWidth="242.0" style="-fx-background-color: #101820ff; -fx-background-radius: 50; -fx-border-radius: 50;" text="signup" textFill="WHITE">
          <font>
-            <Font name="Arial Rounded MT Bold" size="17.0" />
-         </font>
-      </Label>
-      <Label layoutX="27.0" layoutY="136.0" text="password : " textFill="#101820">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="17.0" />
-         </font>
-      </Label>
-      <TextField fx:id="username" layoutX="198.0" layoutY="93.0" prefHeight="27.0" prefWidth="263.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 10;" />
-      <TextField fx:id="emailAddress" layoutX="198.0" layoutY="208.0" prefHeight="27.0" prefWidth="263.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 10;" />
-      <Label layoutX="198.0" layoutY="30.0" text="signup" textFill="#101820">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="32.0" />
-         </font>
-      </Label>
-      <Button layoutX="379.0" layoutY="304.0" mnemonicParsing="false" onAction="#signup" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #101820ff; -fx-background-radius: 15;" text="signup" textFill="WHITE">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="12.0" />
+            <Font name="Arial Rounded MT Bold" size="15.0" />
          </font></Button>
-      <Label layoutX="27.0" layoutY="175.0" text="confirm password : " textFill="#101820">
+      <PasswordField fx:id="password" layoutX="50.0" layoutY="270.0" prefHeight="27.0" prefWidth="250.0" promptText="password" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <PasswordField fx:id="passConfirm" layoutX="50.0" layoutY="313.0" prefHeight="27.0" prefWidth="250.0" promptText="confirm password" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <Label fx:id="errorLog" layoutX="12.0" layoutY="504.0" prefHeight="18.0" prefWidth="325.0" textFill="#c20303" />
+      <Label layoutX="46.0" layoutY="166.0" onMouseClicked="#back" onMouseReleased="#back" prefHeight="38.0" prefWidth="66.0" text="LOGIN" textFill="#94662d">
          <font>
-            <Font name="Arial Rounded MT Bold" size="17.0" />
+            <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>
       </Label>
-      <PasswordField fx:id="password" layoutX="198.0" layoutY="133.0" prefHeight="27.0" prefWidth="263.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 10;" />
-      <PasswordField fx:id="passConfirm" layoutX="198.0" layoutY="172.0" prefHeight="27.0" prefWidth="263.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 10;" />
-      <Label fx:id="errorLog" layoutX="27.0" layoutY="300.0" prefHeight="18.0" prefWidth="325.0" textFill="#c20303" />
-      <Polygon fill="#101820" layoutX="55.0" layoutY="79.0" points="-35.999977111816406, -45.20000457763672, -19.999977111816406, -30.800010681152344, -19.999977111816406, -57.99999237060547" stroke="#101820" strokeType="INSIDE" strokeWidth="0.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="12.0" layoutX="27.0" layoutY="29.0" stroke="#101820" strokeType="INSIDE" width="16.0" />
-      <Label layoutX="47.0" layoutY="15.0" onMouseClicked="#back" onMouseReleased="#back" prefHeight="38.0" prefWidth="30.0" text="back" textFill="#101820">
+      <ChoiceBox fx:id="questionChoice" layoutX="23.0" layoutY="420.0" prefHeight="27.0" prefWidth="74.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 5; -fx-control-inner-background: #f2AA4cff; -fx-text-fill: #101820ff; -fx-mark-color: #101820ff;" stylesheets="@application.css" />
+      <TextField fx:id="passwordAnswer" layoutX="122.0" layoutY="420.0" prefHeight="27.0" prefWidth="202.0" promptText="answer" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <ImageView fitHeight="104.0" fitWidth="156.0" layoutX="98.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="10.0" layoutY="398.0" text="choose a backup question if you ever forgot your password">
          <font>
-            <Font name="Arial Rounded MT Bold" size="12.0" />
+            <Font name="Arial Rounded MT Bold" size="11.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="questionChoice" layoutX="27.0" layoutY="251.0" prefHeight="27.0" prefWidth="163.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 5; -fx-control-inner-background: #f2AA4cff; -fx-text-fill: #101820ff; -fx-mark-color: #101820ff;" stylesheets="@application.css" />
-      <TextField fx:id="passwordAnswer" layoutX="198.0" layoutY="251.0" prefHeight="27.0" prefWidth="263.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff; -fx-border-radius: 10;" />
    </children>
 </AnchorPane>

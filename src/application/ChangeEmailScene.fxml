@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="537.0" maxWidth="350.0" minHeight="537.0" minWidth="350.0" prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2AA4c;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="application.SettingController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="52.0" stroke="#101820" strokeType="INSIDE" width="350.0" />
+      <ImageView fitHeight="60.0" fitWidth="70.0" layoutX="269.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="135.0" layoutY="12.0" text="setting" textFill="#f2aa4c">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../back-icon.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="41.0" layoutY="399.0" prefHeight="18.0" prefWidth="266.0" textFill="#101820">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="42.0" layoutY="357.0" mnemonicParsing="false" onAction="#changeEmail" prefHeight="26.0" prefWidth="266.0" style="-fx-background-color: #101820; -fx-background-radius: 15;" text="submit" textFill="#f2aa4c">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
+         </font>
+      </Button>
+      <TextField fx:id="email" layoutX="62.0" layoutY="286.0" prefHeight="27.0" prefWidth="226.0" promptText="enter the new email..." style="-fx-background-color: transparent; -fx-border-color: #101820; -fx-prompt-text-fill: #101820; -fx-border-radius: 15;" />
+      <ImageView fitHeight="161.0" fitWidth="196.0" layoutX="95.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../mail-icon.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -4,39 +4,46 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="350.0" prefWidth="500.0" style="-fx-background-color: #f2AA4cff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginHandler">
+<AnchorPane maxHeight="537.0" maxWidth="350.0" minHeight="537.0" minWidth="350.0" prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2AA4C;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginHandler">
    <children>
-      <Rectangle arcHeight="55.0" arcWidth="55.0" fill="#eaa147" height="294.0" layoutX="27.0" layoutY="21.0" stroke="#101820" strokeLineCap="ROUND" strokeType="INSIDE" width="267.0" />
-      <PasswordField fx:id="password" layoutX="50.0" layoutY="161.0" prefHeight="27.0" prefWidth="230.0" promptText="password" style="-fx-border-color: #101820ff; -fx-background-color: transparent; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
-      <TextField fx:id="username" layoutX="50.0" layoutY="121.0" prefHeight="27.0" prefWidth="230.0" promptText="username" style="-fx-border-color: #101820ff; -fx-background-color: transparent; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
-      <Label layoutX="50.0" layoutY="59.0" text="signin" textFill="#101820">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="259.0" stroke="BLACK" strokeType="INSIDE" width="350.0" />
+      <PasswordField fx:id="password" layoutX="60.0" layoutY="351.0" prefHeight="27.0" prefWidth="230.0" promptText="password" style="-fx-border-color: #101820ff; -fx-background-color: transparent; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <TextField fx:id="username" layoutX="62.0" layoutY="306.0" prefHeight="27.0" prefWidth="230.0" promptText="username" style="-fx-border-color: #101820ff; -fx-background-color: transparent; -fx-border-radius: 30; -fx-prompt-text-fill: #101820ff;" />
+      <Label layoutX="46.0" layoutY="210.0" prefHeight="42.0" prefWidth="65.0" text="LOGIN" textFill="#f2aa4c">
          <font>
-            <Font name="Arial Rounded MT Bold" size="40.0" />
+            <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>
       </Label>
-      <Button layoutX="180.0" layoutY="198.0" mnemonicParsing="false" onAction="#signIn" prefHeight="20.0" prefWidth="99.0" style="-fx-background-color: #101820ff; -fx-border-radius: 50; -fx-background-radius: 15;" text="signin" textFill="WHITE">
+      <Button layoutX="46.0" layoutY="427.0" mnemonicParsing="false" onAction="#signIn" prefHeight="27.0" prefWidth="263.0" style="-fx-background-color: #101820ff; -fx-border-radius: 50; -fx-background-radius: 50;" text="LOGIN" textFill="WHITE">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button layoutX="206.0" layoutY="213.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-color: transparent;" text="SIGN UP" textFill="#94662d">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>
       </Button>
-      <Button layoutX="181.0" layoutY="234.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-color: transparent;" text="or... signup" textFill="#101820">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="14.0" />
-         </font>
-      </Button>
-      <Label fx:id="errorLog" layoutX="50.0" layoutY="207.0" prefHeight="18.0" prefWidth="124.0" textFill="#c20303">
+      <Label fx:id="errorLog" layoutX="47.0" layoutY="399.0" prefHeight="18.0" prefWidth="256.0" textFill="#c20303">
          <font>
             <Font name="Arial Rounded MT Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="39.0" layoutY="279.0" mnemonicParsing="false" onAction="#forgetPassword" prefHeight="27.0" prefWidth="184.0" style="-fx-background-color: transparent;" text="forgot password? click!" textFill="#101820">
+      <Button layoutX="83.0" layoutY="510.0" mnemonicParsing="false" onAction="#forgetPassword" prefHeight="27.0" prefWidth="184.0" style="-fx-background-color: transparent;" text="forgot password? click!" textFill="#101820">
          <font>
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
       </Button>
+      <ImageView fitHeight="104.0" fitWidth="156.0" layoutX="98.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../logo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

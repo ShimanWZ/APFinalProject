@@ -36,7 +36,7 @@ public class ForgetPasswordController {
 			if (answerField.getText().equals(temp.getPasswordAnswer())) 
 				passwordField.setText("your password is : " + temp.getPassword());
 			else passwordField.setText("please enter a valid answer");
-		}
+		} else passwordField.setText("no user found!");
 	}
 	@FXML private void back() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));

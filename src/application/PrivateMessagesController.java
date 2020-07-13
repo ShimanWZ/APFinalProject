@@ -13,13 +13,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class PrivateMessagesController {
-	@FXML ListView<Message> chatList;
-	@FXML ListView<Integer> unreadCount;
+	@FXML private ListView<Message> chatList;
+	@FXML private ListView<Integer> unreadCount;
+	@FXML private Label username;
+	
 	private boolean init = false;
 	
 	{
@@ -39,6 +42,7 @@ public class PrivateMessagesController {
 	
 	@FXML private void initializeChats() {
 		if (!init) {
+			username.setText(Main.getCurUser().getUsername());
 			chatList.getItems().clear();
 			unreadCount.getItems().clear(); 
 			User thisUser = Main.getCurUser();
@@ -59,12 +63,10 @@ public class PrivateMessagesController {
 			String thisContact = (msg.getReciever().equalsIgnoreCase(Main.getCurUser().getUsername()) ? msg.getSender() : msg.getReciever());
 			Main.setContact(thisContact);
 			
-			Stage chatStage = new Stage();
 			Parent root = FXMLLoader.load(getClass().getResource("MainChatScene.fxml"));
 			Main.tictactoe = new Scene(root);
 			Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			chatStage.setScene(Main.tictactoe);
-			chatStage.show();
+			Main.window.setScene(Main.tictactoe);
 		}
 	}
 	@FXML private void deletePrivateMessage() throws IOException {
@@ -83,8 +85,25 @@ public class PrivateMessagesController {
 		init = false;
 		initializeChats();
 	}
-	@FXML private void back() {
-		Main.window.setScene(Main.mainScene);
+	@FXML private void playAI() throws IOException {
+		Main.setGameWithAI(true);
+		Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
+		Main.tictactoe = new Scene(root);
+		Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Main.getGameStage().setScene(Main.tictactoe);
+		Main.getGameStage().show();
+	}
+	@FXML private void logout() throws IOException {
+		String[] command = {"logout"};
+		Main.getObjOut().writeObject(command);
+		Main.getObjOut().flush();
+		Main.window.close();
+	}
+	@FXML private void changeToContactsScene() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("MainPageScene.fxml"));
+		Main.privateMessageScene = new Scene(root);
+		Main.privateMessageScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Main.window.setScene(Main.privateMessageScene);
 	}
 	private Integer countUnread(LinkedList<Message> privateChat) {
 		Iterator<Message> iterator = privateChat.iterator();

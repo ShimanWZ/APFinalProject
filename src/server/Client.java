@@ -56,25 +56,35 @@ public class Client extends Thread{
 				}
 				else if(commandArray[0].equalsIgnoreCase("send")) {
 					handleSendingMessage(commandArray);
-				}else if(commandArray[0].equalsIgnoreCase("logout")) {
+				}
+				else if(commandArray[0].equalsIgnoreCase("logout")) {
 					handleLogOut();
 					handleOffline();
-				}else if(commandArray[0].equalsIgnoreCase("addcontact")) {
+				}
+				else if(commandArray[0].equalsIgnoreCase("addcontact")) {
 					handleAddingContact(commandArray);
-				}else if (commandArray[0].equalsIgnoreCase("online")) {
+				}
+				else if (commandArray[0].equalsIgnoreCase("online")) {
 					handleOnline(commandArray[1]);
-				}else if(commandArray[0].equalsIgnoreCase("deleteMsges")) {
+				}
+				else if(commandArray[0].equalsIgnoreCase("deleteMsges")) {
 					handleDeletingMassege(commandArray);
-				}else if(commandArray[0].equalsIgnoreCase("gameProperties")) {
+				}
+				else if(commandArray[0].equalsIgnoreCase("gameProperties")) {
 					handleRecievingProperties(commandArray);
-				}else if(commandArray[0].equalsIgnoreCase("gameFinished")) {
+				}
+				else if(commandArray[0].equalsIgnoreCase("gameFinished")) {
 					handleGameFinished(commandArray);
+				}
+				else if(commandArray[0].equalsIgnoreCase("setting")) {
+					handleSetting(commandArray);
 				}
 			}
 		} catch (IOException | ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
 	}
+	
 	
 	
 	//--------------------------handling methods------------------------------//
@@ -265,6 +275,14 @@ public class Client extends Thread{
 				client.getObjectOS().writeObject(command);
 				client.getObjectOS().flush();
 			}
+		}
+	}
+	private void handleSetting(String[] commandArray) {
+		if (commandArray[1].equalsIgnoreCase("password"));{
+			server.getUsers().get(this.username).setPassword(commandArray[2]);
+		} 
+		if (commandArray[1].equalsIgnoreCase("email")) {
+			server.getUsers().get(this.username).setEmailAddress(commandArray[2]);
 		}
 	}
 	//---------------------------------------------getter methods-----------------------------------//

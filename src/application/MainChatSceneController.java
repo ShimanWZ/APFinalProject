@@ -10,13 +10,27 @@ import base.MessageListener;
 import base.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 public class MainChatSceneController {
 	@FXML private TextField textField;
 	@FXML private ListView<String> messages;
+	@FXML private Label username;
 	private boolean init = true;
+	private String smile = new String(Character.toChars(0x1F642));
+	private String laugh = new String(Character.toChars(0x1F602));
+	private String wink = new String(Character.toChars(0x1F609));
+	private String kiss = new String(Character.toChars(0x1F618));
+	private String tongue = new String(Character.toChars(0x1F61C));
+	private String neutral = new String(Character.toChars(0x1F610));
+	private String sad = new String(Character.toChars(0x1F614));
+	private String flushed = new String(Character.toChars(0x1F633));
+	private String heart = new String(Character.toChars(0x2764));
 	
 	{
 		Main.getCurUser().addMessageListener(new MessageListener() {
@@ -51,8 +65,16 @@ public class MainChatSceneController {
 			textField.setText("");
 		}
 	}
+	@FXML private void back() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("PrivateMessages.fxml"));
+		Main.mainScene = new Scene(root);
+		Main.mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Main.window.setTitle(Main.getCurUser().getUsername());
+		Main.window.setScene(Main.mainScene);
+	}
 	@FXML private void initializingMessages() {
 		if (init) {
+			username.setText(Main.getContact());
 			System.out.println("in intiing");
 			for (LinkedList<Message> messages : Main.getCurUser().getMessages()) {
 				
@@ -94,6 +116,27 @@ public class MainChatSceneController {
 				}
 			}
 		}
+	}
+	@FXML private void addSmile(){
+		textField.setText(textField.getText() + " " + smile);
+	}
+	@FXML private void addKiss(){
+		textField.setText(textField.getText() + " " + kiss);
+	}@FXML private void addLaugh(){
+		textField.setText(textField.getText() + " " + laugh);
+	}@FXML private void addWink(){
+		textField.setText(textField.getText() + " " + wink);
+	}@FXML private void addTongue(){
+		textField.setText(textField.getText() + " " + tongue);
+	}@FXML private void addNeutral(){
+		textField.setText(textField.getText() + " " + neutral);
+	}@FXML private void addSad(){
+		textField.setText(textField.getText() + " " + sad);
+	}@FXML private void addFlushed(){
+		textField.setText(textField.getText() + " " + flushed);
+	}
+	@FXML private void addHeart(){
+		textField.setText(textField.getText() + " " + heart);
 	}
 }
 

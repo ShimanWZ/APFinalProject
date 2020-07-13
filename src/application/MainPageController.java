@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +20,7 @@ public class MainPageController {
 	@FXML private TextField searchbar;
 	@FXML private ListView<String> onlineUsers;
 	@FXML private Button addContacts;
+	@FXML private Label username;
 	private boolean searchState = false;
 	
 	
@@ -37,6 +39,7 @@ public class MainPageController {
 	}
 	
 	@FXML private void load() {
+		username.setText(Main.getCurUser().getUsername());
 		for (String user : Main.getCurUser().getContacts()) {
 			if(!contactList.getItems().contains(user) && !user.equalsIgnoreCase(Main.getCurUser().getUsername()) && !searchState) {
 				contactList.getItems().add(user);
@@ -48,12 +51,10 @@ public class MainPageController {
 			String contact = contactList.getSelectionModel().getSelectedItem();
 			if (Main.getCurUser().getContacts().contains(contact)) {
 				Main.setContact(contact);
-				Stage chatStage = new Stage();
 				Parent root = FXMLLoader.load(getClass().getResource("MainChatScene.fxml"));
 				Main.tictactoe = new Scene(root);
 				Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-				chatStage.setScene(Main.tictactoe);
-				chatStage.show();
+				Main.window.setScene(Main.tictactoe);
 			}
 		}
 	}
@@ -67,6 +68,7 @@ public class MainPageController {
 		}
 		Main.getCurUser().addContact(username);
 		searchState = false;
+		addContacts.setDisable(true);
 		contactList.getItems().clear();
 	}
 	@FXML private void search() {
@@ -82,15 +84,6 @@ public class MainPageController {
 	}
 	@FXML private void play() throws IOException {
 		Main.setGameWithAI(false);
-		Main.setContact(contactList.getSelectionModel().getSelectedItem());
-		Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
-		Main.tictactoe = new Scene(root);
-		Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		Main.getGameStage().setScene(Main.tictactoe);
-		Main.getGameStage().show();
-	}
-	@FXML private void playAI() throws IOException {
-		Main.setGameWithAI(true);
 		Main.setContact(contactList.getSelectionModel().getSelectedItem());
 		Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
 		Main.tictactoe = new Scene(root);
