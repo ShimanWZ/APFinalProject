@@ -83,6 +83,9 @@ public class PrivateMessagesController {
 		init = false;
 		initializeChats();
 	}
+	@FXML private void back() {
+		Main.window.setScene(Main.mainScene);
+	}
 	private Integer countUnread(LinkedList<Message> privateChat) {
 		Iterator<Message> iterator = privateChat.iterator();
 		int count = 0;
@@ -95,4 +98,5 @@ public class PrivateMessagesController {
 		}
 		return count;
 	}
+	
 }

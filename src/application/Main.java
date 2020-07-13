@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import base.User;
-import base.UserStatusListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,9 +24,10 @@ public class Main extends Application {
 	private static User curUser;
 	private static String contact;
 	private static ArrayList<String> users;
+	private static boolean isGameWithAI = true;
+	
 	private static Server server;
 	private static Socket socket  = null;
-	
 	private static OutputStream outputStream;
 	private static InputStream inputStream;
 	private static BufferedReader bufferedReader;
@@ -35,16 +35,8 @@ public class Main extends Application {
 	private static ObjectOutputStream objOut;
 	private static ObjectInputStream objIn;
 	
-	public static Stage getGameStage() {
-		return game;
-	}
-	public static void setGameStage(Stage game) {
-		Main.game = game;
-	}
 	public static Stage window, game = new Stage();
-	public static Scene main, tictactoe, signup, forgetPassword, chatScene, mainScene;
-	
-	private static boolean isGameWithAI = true;
+	public static Scene main, tictactoe, signup, forgetPassword, chatScene, mainScene, privateMessageScene;
 	
 	
 	@Override
@@ -101,13 +93,11 @@ public class Main extends Application {
 	public static ObjectInputStream getObjIn() {
 		return objIn;
 	}
-	private static void initializeInputOutput(Socket socket) throws IOException {
-		outputStream = socket.getOutputStream();
-		inputStream = socket.getInputStream();
-		bufferedOutputStream = new BufferedOutputStream(outputStream);
-		bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-		objOut = new ObjectOutputStream(outputStream);
-		objIn = new ObjectInputStream(inputStream);
+	public static Stage getGameStage() {
+		return game;
+	}
+	public static void setGameStage(Stage game) {
+		Main.game = game;
 	}
 	public static ArrayList<String> getUsers() {
 		return users;
@@ -126,5 +116,13 @@ public class Main extends Application {
 	}
 	public static void setGameWithAI(boolean isGameWithAI) {
 		Main.isGameWithAI = isGameWithAI;
+	}
+	private static void initializeInputOutput(Socket socket) throws IOException {
+		outputStream = socket.getOutputStream();
+		inputStream = socket.getInputStream();
+		bufferedOutputStream = new BufferedOutputStream(outputStream);
+		bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+		objOut = new ObjectOutputStream(outputStream);
+		objIn = new ObjectInputStream(inputStream);
 	}
 }

@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 
 public class MainChatSceneController {
 	@FXML private TextField textField;
@@ -34,8 +33,8 @@ public class MainChatSceneController {
 			}
 		});
 	}
-	public void sendMessage() throws IOException {
-		System.out.println("sending called...");
+	
+	@FXML private void sendMessage() throws IOException {
 		String from = Main.getCurUser().getUsername();
 		String to = Main.getContact();
 		String message = textField.getText();
@@ -51,17 +50,6 @@ public class MainChatSceneController {
 			setMessageOnRead();
 			textField.setText("");
 		}
-	}
-	private String[] initializeCommandString(String from, String to, String message) {
-		String[] command = new String[4];
-		command[0] = "send";
-		command[1] = from;
-		command[2] = to;
-		command[3] = message;
-		return command;
-	}
-	public void addMessage(String s){
-		messages.getItems().add(s);
 	}
 	@FXML private void initializingMessages() {
 		if (init) {
@@ -87,6 +75,14 @@ public class MainChatSceneController {
 			}
 			init = false;
 		}
+	}
+	private String[] initializeCommandString(String from, String to, String message) {
+		String[] command = new String[4];
+		command[0] = "send";
+		command[1] = from;
+		command[2] = to;
+		command[3] = message;
+		return command;
 	}
 	private void setMessageOnRead() {
 		User user = Main.getCurUser();

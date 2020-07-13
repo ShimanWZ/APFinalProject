@@ -27,7 +27,7 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <Button layoutX="246.0" layoutY="461.0" mnemonicParsing="false" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="back" textFill="#f2aa4c" />
+      <Button layoutX="246.0" layoutY="461.0" mnemonicParsing="false" onAction="#back" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="back" textFill="#f2aa4c" />
       <Button layoutX="45.0" layoutY="461.0" mnemonicParsing="false" onAction="#deletePrivateMessage" style="-fx-border-color: #101820ff; -fx-background-color: #101820ff; -fx-background-radius: 10; -fx-border-radius: 10;" text="delete selected chat" textFill="#f2aa4c" />
    </children>
 </AnchorPane>

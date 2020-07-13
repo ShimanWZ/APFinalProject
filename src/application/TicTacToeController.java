@@ -28,6 +28,8 @@ public class TicTacToeController {
 	private TicTacToe curGame = new TicTacToe();
 	private ArrayList<Object> boardContents = new ArrayList<Object>(); //this arraylist comes in handy when we want to clear the screen
 	public static boolean propertiesRecieved;
+	
+	
 	{
 		Main.getCurUser().setOpponentMoveListener(new OpponentMoveListener() {
 			@Override
@@ -67,11 +69,8 @@ public class TicTacToeController {
 		//checks if we clicked on the board
 		if (curI != -1 && curJ != -1 && curGame.isMyTurn()) {
 			//if it is placed, the computer turn will be called
-			System.out.println("in controller if");
 			if(curGame.setOnBoard(curI, curJ, TicTacToeContent.X)) {
-				System.out.println("mine set");
 				draw(curI, curJ, 'X');
-				System.out.println("mine drawn");
 
 				curGame.setMyTurn(false);
 				turn.setText("");
@@ -158,17 +157,17 @@ public class TicTacToeController {
 		pane.getChildren().add(o);
 		boardContents.add(o);
 	}
-	public TicTacToe getCurrGame() {
-		return curGame;
-	}
-	public void setCurrGame(TicTacToe currGame) {
-		this.curGame = currGame;
-	}
 	private void setToGameEndedScene() throws IOException {
 		GameEndedController.setGame(curGame);
 		Parent root = FXMLLoader.load(getClass().getResource("GameEndedScene.fxml"));
 		Main.tictactoe = new Scene(root);
 		Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Main.getGameStage().setScene(Main.tictactoe);
+	}
+	public TicTacToe getCurrGame() {
+		return curGame;
+	}
+	public void setCurrGame(TicTacToe currGame) {
+		this.curGame = currGame;
 	}
 }

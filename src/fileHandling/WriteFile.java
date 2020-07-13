@@ -6,10 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-
-import application.Main;
 import games.TicTacToe;
-import server.Server;
 
 public class WriteFile {
 	public static class TicTacToeFile{

@@ -1,9 +1,7 @@
 package server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -11,11 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
-
-import application.Main;
 import base.Message;
 import base.User;
-import base.UserStatusListener;
 import fileHandling.WriteFile;
 
 public class Client extends Thread{
@@ -23,7 +18,6 @@ public class Client extends Thread{
 	private Socket socket;
 	private InputStream inputStream;
 	private OutputStream outputStream;
-	private BufferedReader bufferedReader;
 	private ObjectInputStream objectIS;
 	private ObjectOutputStream objectOS;
 	private Server server;
@@ -35,7 +29,6 @@ public class Client extends Thread{
 		try {
 			this.inputStream = socket.getInputStream();
 			this.outputStream = socket.getOutputStream();
-			this.bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			this.objectIS = new ObjectInputStream(inputStream);
 			this.objectOS = new ObjectOutputStream(outputStream);
 		} catch (IOException e) {
@@ -83,37 +76,8 @@ public class Client extends Thread{
 		}
 	}
 	
-	private void handleGameFinished(String[] commandArray) {
-		User thisUser = server.getUsers().get(this.getUsername());
-		if (commandArray[1].equalsIgnoreCase("true")) {
-			if (commandArray[2].equalsIgnoreCase("true")) {
-				thisUser.setTictactoeCompWins(thisUser.getTictactoeCompWins() + 1);
-			}else {
-				thisUser.setTictactoePlayWins(thisUser.getTictactoePlayWins() + 1);
-			}
-		}else {
-			if (commandArray[2].equalsIgnoreCase("true")) {
-				thisUser.setTictactoeCompLosses(thisUser.getTictactoeCompLosses() + 1);
-			}else {
-				thisUser.setTictactoePlayLosses(thisUser.getTictactoePlayLosses() + 1);
-			}
-		}
-		WriteFile.UsersFile.writeUsers(server.getUsers());
-	}
-	private void handleRecievingProperties(String[] commandArray) throws IOException {
-		String reciever = commandArray[1];
-		for (Client client: server.getClients()) {
-			if (client.getUsername().equals(reciever)){
-				String[] command = new String[3];
-				command[0] = commandArray[0];
-				command[1] = commandArray[2];
-				command[2] = commandArray[3];
-				client.getObjectOS().writeObject(command);
-				client.getObjectOS().flush();
-			}
-		}
-	}
-	//----------------------------helper methods---------------------------------//
+	
+	//--------------------------handling methods------------------------------//
 	private void handleSignup() throws ClassNotFoundException, IOException {
 		User temp = (User) objectIS.readObject();
 		if (server.getUsers().containsKey(temp.getUsername())) {
@@ -126,6 +90,7 @@ public class Client extends Thread{
 		}
 		outputStream.flush();
 	}
+	
 	private void handleLogin(String[] commandArray) throws IOException {
 		String username = commandArray[1];
 		String password = commandArray[2];
@@ -143,6 +108,7 @@ public class Client extends Thread{
 			outputStream.write("noUserFound\n".getBytes());
 		}
 	}
+	
 	private void handleForgetPassword(String[] commandArray) throws IOException {
 		String username = commandArray[1];
 		if (server.getUsers().containsKey(username)) {
@@ -155,6 +121,8 @@ public class Client extends Thread{
 			objectOS.flush();
 		}
 	}
+	
+	@SuppressWarnings("rawtypes")
 	private void handleGetUsersList() throws IOException {
 		ArrayList<String> usersList = new ArrayList<>();
 		
@@ -166,6 +134,7 @@ public class Client extends Thread{
 		objectOS.writeObject(arrays);
 		objectOS.flush();
 	}
+	
 	private void handleSendingMessage(String[] commandArray) throws IOException {
 		String sender = commandArray[1];
 		String reciever = commandArray[2];
@@ -182,10 +151,12 @@ public class Client extends Thread{
 			}
 		}
 	}
+	
 	private void handleLogOut() throws IOException {
 		server.getClients().remove(this);
 		this.socket.close();
 	}
+	
 	private void handleAddingContact(String[] commandArray) {
 		String user = commandArray[1];
 		String addUser = commandArray[2];
@@ -193,28 +164,24 @@ public class Client extends Thread{
 		User thisUser = server.getUsers().get(user);
 		thisUser.addContact(addUser);
 		WriteFile.UsersFile.writeUsers(server.getUsers());
-		System.out.println("contact added");
 	}
+	
+	@SuppressWarnings("rawtypes")
 	private void handleSavingMessage(String sender, String reciever, String text){
 		Message message = new Message(sender, reciever, text);
-		System.out.println("messageCreated!");
 		boolean flag1 = false, flag2 = false;
 		for (Map.Entry entry : server.getUsers().entrySet()) {
-			System.out.println("looping... " + entry.getKey());
 			if (entry.getKey().equals(sender)) {
 				User senderUser =(User)entry.getValue();
 				senderUser.addMessage(message, reciever);
 				flag1 = true;
-				System.out.println("firstif");
 			}
 			else if (entry.getKey().equals(reciever)) {
 				User recieverUser =(User)entry.getValue();
 				recieverUser.addMessage(message, sender);
 				flag2 = true;
-				System.out.println("second if");
 			}
 			if (flag1 && flag2) {
-				System.out.println("exit looping");
 				break;
 			}
 		}
@@ -227,6 +194,7 @@ public class Client extends Thread{
 			client.getObjectOS().flush();
 		}
 	}
+	
 	private void handleOnline(String username) throws IOException {
 		String[] command = {"online", username};
 		for (Client client : server.getClients()) {
@@ -236,7 +204,11 @@ public class Client extends Thread{
 			}
 		}
 	}
+	
+	@SuppressWarnings("rawtypes")
 	private void handleDeletingMassege(String[] commandArray) {
+		// this method searchs for the targeted users and after finding them
+		// searchs through their messages and delete their message...
 		for (Map.Entry entry : server.getUsers().entrySet()) {
 			if (entry.getKey().equals(commandArray[1])) {
 				User thisuser = (User) entry.getValue();
@@ -263,6 +235,38 @@ public class Client extends Thread{
 		}
 	}
 	
+	private void handleGameFinished(String[] commandArray) {
+		User thisUser = server.getUsers().get(this.getUsername());
+		//command 1 : winner or looser, command 2 : AI or not!
+		if (commandArray[1].equalsIgnoreCase("true")) {
+			if (commandArray[2].equalsIgnoreCase("true")) {
+				thisUser.setTictactoeCompWins(thisUser.getTictactoeCompWins() + 1);
+			}else {
+				thisUser.setTictactoePlayWins(thisUser.getTictactoePlayWins() + 1);
+			}
+		}else {
+			if (commandArray[2].equalsIgnoreCase("true")) {
+				thisUser.setTictactoeCompLosses(thisUser.getTictactoeCompLosses() + 1);
+			}else {
+				thisUser.setTictactoePlayLosses(thisUser.getTictactoePlayLosses() + 1);
+			}
+		}
+		WriteFile.UsersFile.writeUsers(server.getUsers());
+	}
+	// handles recieving game properties from other user...
+	private void handleRecievingProperties(String[] commandArray) throws IOException {
+		String reciever = commandArray[1];
+		for (Client client: server.getClients()) {
+			if (client.getUsername().equals(reciever)){
+				String[] command = new String[3];
+				command[0] = commandArray[0];
+				command[1] = commandArray[2];
+				command[2] = commandArray[3];
+				client.getObjectOS().writeObject(command);
+				client.getObjectOS().flush();
+			}
+		}
+	}
 	//---------------------------------------------getter methods-----------------------------------//
 	public ObjectOutputStream getObjectOS() {
 		return this.objectOS;

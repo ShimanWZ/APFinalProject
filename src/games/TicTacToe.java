@@ -2,16 +2,14 @@ package games;
 
 import java.io.IOException;
 import application.Main;
-import application.TicTacToeController;
 
 public class TicTacToe {
 	private TicTacToeContent[][] board;
 	private TicTacToeContent computer = TicTacToeContent.O, player = TicTacToeContent.X;
 	private boolean EOGame = false;
-	private boolean playerWin = false;
 	private boolean AI = Main.getIsGameWithAI();
 	private boolean myTurn = true;
-	private int winner = -2; // if the current player is the winner this variable will be 1
+	private int winner = -2; // winner: 1 , loser : -1, tie : 0
 	private static int lastOpponentI = -1, lastOpponentJ = -1;
 	
 	
@@ -22,35 +20,21 @@ public class TicTacToe {
 	
 	
 	public void oponentTurn() throws IOException {
-		
 		bestMove bestMove = findBestMove(board); 
 			  
-			lastOpponentI = bestMove.bestI;
-			lastOpponentJ = bestMove.bestJ;
+		lastOpponentI = bestMove.bestI;
+		lastOpponentJ = bestMove.bestJ;
+		
+		if(lastOpponentI != -1) board[lastOpponentI][lastOpponentJ] = TicTacToeContent.O;
 			
-			if(lastOpponentI != -1) board[lastOpponentI][lastOpponentJ] = TicTacToeContent.O;
-			
-			if (checkForWin()) {
-				winner = -1;
-				sendGameProperties(-1, true);
-				System.out.println("Game over!");
-			}
+		if (checkForWin()) {
+			winner = -1;
+			sendGameProperties(-1, true);
+			System.out.println("Game over!");
+		}
 		
 	}
 	
-	public boolean getIfOpponentWon() throws IOException {
-		if (checkForWin()) {
-			winner = -1;
-			sendGameProperties(-1, false);
-			System.out.println("Game over!");
-			return true;
-		}
-		return false;
-	}
-	
-	public void setOpponentOnBord(int curI, int curJ) {
-		board[curI][curJ] = TicTacToeContent.O;
-	}
 	public boolean setOnBoard(int curI, int curJ, TicTacToeContent content) throws IOException {
 		if (isValid(curI, curJ) && !EOGame) {
 			
@@ -59,7 +43,6 @@ public class TicTacToe {
 			if (!AI) sendProperties(curI, curJ);
 			if (checkForWin()) {
 				System.out.println("U won!");
-				playerWin = true;
 				sendGameProperties(1, AI);
 				winner = 1;
 			}
@@ -67,19 +50,6 @@ public class TicTacToe {
 		}
 		return false;
 	}
-	
-	
-	private void sendProperties(int curI, int curJ)  {
-		String[] s = {"gameProperties", Main.getContact(), curI + "", curJ + ""};
-		try {
-			Main.getObjOut().writeObject(s);
-			Main.getObjOut().flush();
-			System.out.println("properties sent!");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	private boolean checkForWin() {
 		if((board[0][0] == board[0][1] && board[0][0] == board[0][2] && board[0][0] != null) 
@@ -115,6 +85,7 @@ public class TicTacToe {
 		}
 		return true;
 	}
+	//----------------------------- setters and getters... ------------------------------//
 	public boolean endOfGame() {
 		return EOGame;
 	}
@@ -145,6 +116,35 @@ public class TicTacToe {
 	public void setMyTurn(boolean myTurn) {
 		this.myTurn = myTurn;
 	}
+	public boolean getIfOpponentWon() throws IOException {
+		if (checkForWin()) {
+			winner = -1;
+			sendGameProperties(-1, false);
+			System.out.println("Game over!");
+			return true;
+		}
+		return false;
+	}
+	public void setOpponentOnBord(int curI, int curJ) {
+		board[curI][curJ] = TicTacToeContent.O;
+	}
+	//--------------------------------------------------------------------------//
+	//--------------------------server handling---------------------------------//
+	//--------------------------------------------------------------------------//
+	// when a move is done this method sends the current
+	//move to the opponent....
+	private void sendProperties(int curI, int curJ)  {
+		String[] s = {"gameProperties", Main.getContact(), curI + "", curJ + ""};
+		try {
+			Main.getObjOut().writeObject(s);
+			Main.getObjOut().flush();
+			System.out.println("properties sent!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	// when the game's ended, this method will send the
+	// properties to the server....
 	public static void sendGameProperties(int isWinner, boolean AI) throws IOException {
 		String[] command = new String[3];
 		if (isWinner == 1) {
@@ -164,7 +164,6 @@ public class TicTacToe {
 		Main.getObjOut().flush();
 	}
 	private static String[] generateCommand(String isWinner, String AI) {
-
 		String[] command = new String[3];
 		command[0] = "gameFinished";
 		command[1] = isWinner;

@@ -9,10 +9,7 @@ package application;
 
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
-
 import base.Message;
 import base.MessageListener;
 import base.User;
@@ -23,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import server.Client;
 import server.Server;
 
 public class LoginHandler {

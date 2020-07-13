@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import application.Main;
-import application.MainChatSceneController;
 import application.TicTacToeController;
 import games.TicTacToe;
-import javafx.application.Platform;
-import server.Server;
+
 
 public class User implements Serializable {
 	private static final long serialVersionUID = -1470082223508490796L;
@@ -124,7 +122,6 @@ public class User implements Serializable {
 		TicTacToe.setLastOponentI(i);
 		TicTacToe.setLastOponentJ(j);
 		TicTacToeController.propertiesRecieved = true;
-		System.out.println("properties recieved : " + commandArray[1] + commandArray[2]);
 	}
 	//--------------------------------------------------------------------------//
 	//----------------------------- getters and setters ------------------------//

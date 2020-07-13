@@ -17,7 +17,7 @@ public class Server extends Thread {
 	private boolean serverRunning = false;
 	private HashMap<String, User> users = new HashMap<String, User>();
 	private ArrayList<Client> clients = new ArrayList<>();
-	
+
 	//---------------------------constructor-------------------------------------//
 	public Server(int port) {
 		this.port = port;
@@ -45,28 +45,30 @@ public class Server extends Thread {
 		}
 	}
 	//------------------getters And setters-----------------//
-	//this is used for serverSide only.
+	//this is used for serverSide only
 	public HashMap<String, User> getUsers() {
 		return users;
 	}
-	// this method sets all users to server
+	// this method sets all users from file to server
 	private void setUsers() {
 		users = ReadFile.UsersFile.readUsers();
 	}
-	//online users are stored in clients.
+	//this method give online users stored in clients.
 	public ArrayList<Client> getClients(){
 		return clients;
 	}
-	//giving other users access to all other usernames.
+	// this method gives user access to all other usernames.
 	public static Object[] getUsersProperties(ObjectOutputStream objOut, ObjectInputStream objIn) throws IOException, ClassNotFoundException {
+		//initializing and sending command...
 		String[] command = new String[1];
 		command[0] = "getusers";
-		
 		objOut.writeObject(command);
 		objOut.flush();
+		
+		//getting the server answer
 		Object obj = objIn.readObject();
-		System.out.println("error cause:" + obj);
 		Object[] users = (Object[]) obj;
+		
 		return users;
 	}
 }

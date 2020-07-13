@@ -92,25 +92,23 @@ public class MainPageController {
 	@FXML private void playAI() throws IOException {
 		Main.setGameWithAI(true);
 		Main.setContact(contactList.getSelectionModel().getSelectedItem());
-		Stage gameStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("tictactoe.fxml"));
 		Main.tictactoe = new Scene(root);
 		Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		gameStage.setScene(Main.tictactoe);
-		gameStage.show();
+		Main.getGameStage().setScene(Main.tictactoe);
+		Main.getGameStage().show();
 	}
 	@FXML private void exitSearchMode() {
 		searchState = false;
 		addContacts.setDisable(true);
+		searchbar.setText("");
 		contactList.getItems().clear();
 	}
 	@FXML private void chat() throws IOException {
-		Stage privateMEssages = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("PrivateMessages.fxml"));
-		Main.tictactoe = new Scene(root);
-		Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		privateMEssages.setScene(Main.tictactoe);
-		privateMEssages.show();
+		Main.privateMessageScene = new Scene(root);
+		Main.privateMessageScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Main.window.setScene(Main.privateMessageScene);
 	}
 	@FXML private void logout() throws IOException {
 		String[] command = {"logout"};

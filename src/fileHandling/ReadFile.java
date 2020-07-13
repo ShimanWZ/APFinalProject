@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -36,6 +35,7 @@ public class ReadFile {
 				FileInputStream inputStream = new FileInputStream("server.dat");
 				ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 				
+				@SuppressWarnings("unchecked")
 				HashMap<String, User> users = (HashMap<String, User>)(objectInputStream.readObject());
 				
 				objectInputStream.close();
