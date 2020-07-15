@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -16,9 +17,13 @@ public class SettingController {
 	@FXML private Label passLabel;
 	@FXML private TextField email;
 	@FXML private Label emailLabel;
-	private boolean init = false;
+	@FXML private TextField questAns;
+	@FXML private ChoiceBox<String> questionChoice;
+	private boolean choiceBoxLoaded = false;
 	
-	
+	//-----------------------------------------------------------------//
+	//-------------the next three methods change scenes----------------//
+	//-----------------------------------------------------------------//
 	@FXML private void changePassScene() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("changePassScene.fxml"));
 		Main.mainScene = new Scene(root);
@@ -40,6 +45,11 @@ public class SettingController {
 		Main.window.setTitle(Main.getCurUser().getUsername());
 		Main.window.setScene(Main.mainScene);
 	}
+	
+	//-----------------------------------------------------------------//
+	//-------------the next two methods change password----------------//
+	//-----------------------------------------------------------------//
+	
 	@FXML private void changePass() throws IOException {
 		String curPassword = curPass.getText();
 		String newPassword = newPass.getText();
@@ -48,6 +58,7 @@ public class SettingController {
 		if (curPassword.equals(Main.getCurUser().getPassword())) {
 			if (newPassword.equals(passConfirmation)) {
 				handleChangingPassword(newPassword);
+				passLabel.setText("password changed successfully");
 			} else passLabel.setText("passwords dont match!");
 		} else passLabel.setText("wrong password");
 				
@@ -62,11 +73,15 @@ public class SettingController {
 		Main.getObjOut().flush();
 		Main.getCurUser().setPassword(newPassword);
 	}
+	//-----------------------------------------------------------------//
+	//-------------the next two methods change email ------------------//
+	//-----------------------------------------------------------------//
 	@FXML private void changeEmail() throws IOException {
 		String emailAddress = email.getText();
 		String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	    if (emailAddress.matches(regex)) {
 	    	handleChangingEmail(emailAddress);
+	    	emailLabel.setText("email changed successfully");
 	    } else emailLabel.setText("wrong email format!");
 	}
 	private void handleChangingEmail(String emailAddress) throws IOException {
@@ -79,12 +94,34 @@ public class SettingController {
 		Main.getObjOut().flush();
 		Main.getCurUser().setEmailAddress(emailAddress);
 	}
-	@FXML private void changeQuestion() {
-		
+	//-----------------------------------------------------------------//
+	//-------the next two methods handle changing pass question--------//
+	//-----------------------------------------------------------------//
+	@FXML private void changeQuestion() throws IOException {
+		String quesString = questionChoice.getSelectionModel().getSelectedItem();
+		String ansString;
+		if(!questAns.getText().isEmpty()) {
+			ansString = questAns.getText();
+			String[] command = new String[4];
+			command[0] = "setting";
+			command[1] = "question";
+			command[2] = quesString;
+			command[3] = ansString;
+			
+			Main.getObjOut().writeObject(command);
+			Main.getObjOut().flush();
+			
+			Main.getCurUser().setPasswordQuestion(quesString);
+			Main.getCurUser().setPasswordAnswer(ansString);
+		}
 	}
 	@FXML private void loadChoiceBox() {
-		
+		if (!choiceBoxLoaded ) {
+			questionChoice.getItems().addAll("favorit color?", "favorite fruit?", "favorite flower?");
+			choiceBoxLoaded = true;
+		}
 	}
+	
 	@FXML private void back() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("PrivateMessages.fxml"));
 		Main.mainScene = new Scene(root);

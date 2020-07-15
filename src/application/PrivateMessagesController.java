@@ -22,7 +22,6 @@ public class PrivateMessagesController {
 	@FXML private ListView<Message> chatList;
 	@FXML private ListView<Integer> unreadCount;
 	@FXML private Label username;
-	
 	private boolean init = false;
 	
 	{
@@ -39,6 +38,7 @@ public class PrivateMessagesController {
 			}
 		});
 	}
+	
 	
 	@FXML private void initializeChats() {
 		if (!init) {
@@ -57,6 +57,22 @@ public class PrivateMessagesController {
 			init = true;
 		}
 	}
+	private Integer countUnread(LinkedList<Message> privateChat) {
+		Iterator<Message> iterator = privateChat.iterator();
+		int count = 0;
+		if (privateChat.getLast().isRead()) {
+			return count;
+		}
+		else {
+			while (iterator.hasNext()) {
+				Message msg = iterator.next();
+				if (!msg.isRead()) count++;
+			}
+		}
+		return count;
+	}
+	
+	
 	@FXML private void choosePrivateMEssage(MouseEvent event) throws IOException {
 		if (event.getClickCount()> 1 && chatList.getSelectionModel().getSelectedItem()!= null) {
 			Message msg = chatList.getSelectionModel().getSelectedItem();
@@ -81,7 +97,7 @@ public class PrivateMessagesController {
 				target = privateChat;
 			}
 		}
-		Main.getCurUser().getMessages().remove(target);
+		Main.getCurUser().getMessages().remove(target); //removes targetted private chat from messages
 		init = false;
 		initializeChats();
 	}
@@ -105,17 +121,10 @@ public class PrivateMessagesController {
 		Main.privateMessageScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Main.window.setScene(Main.privateMessageScene);
 	}
-	private Integer countUnread(LinkedList<Message> privateChat) {
-		Iterator<Message> iterator = privateChat.iterator();
-		int count = 0;
-		if (privateChat.getLast().isRead()) return count;
-		else {
-			while (iterator.hasNext()) {
-				Message msg = iterator.next();
-				if (!msg.isRead()) count++;
-			}
-		}
-		return count;
+	@FXML private void setting() throws IOException {
+		Parent root = FXMLLoader.load(getClass().getResource("Settingscene.fxml"));
+		Main.privateMessageScene = new Scene(root);
+		Main.privateMessageScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		Main.window.setScene(Main.privateMessageScene);
 	}
-	
 }

@@ -15,6 +15,7 @@ import fileHandling.WriteFile;
 
 public class Client extends Thread{
 	private String username;
+	private boolean hasUsername = false;
 	private Socket socket;
 	private InputStream inputStream;
 	private OutputStream outputStream;
@@ -58,8 +59,8 @@ public class Client extends Thread{
 					handleSendingMessage(commandArray);
 				}
 				else if(commandArray[0].equalsIgnoreCase("logout")) {
-					handleLogOut();
 					handleOffline();
+					handleLogOut();
 				}
 				else if(commandArray[0].equalsIgnoreCase("addcontact")) {
 					handleAddingContact(commandArray);
@@ -110,6 +111,7 @@ public class Client extends Thread{
 			String pass = curUser.getPassword();
 			if (pass.equals(password)) {
 				this.username = username;
+				hasUsername = true;
 				outputStream.write("ok\n".getBytes());				
 			}else {
 				outputStream.write("wrongPass\n".getBytes());
@@ -134,12 +136,22 @@ public class Client extends Thread{
 	
 	@SuppressWarnings("rawtypes")
 	private void handleGetUsersList() throws IOException {
-		ArrayList<String> usersList = new ArrayList<>();
-		
+		//initializing usersList
+		ArrayList<String> usersList = new ArrayList<>();		
 		for (Map.Entry entry : server.getUsers().entrySet()) {
 			usersList.add((String)entry.getKey());
 		}
-		Object[] arrays = {usersList, server.getUsers().get(this.username)};
+		
+		//initializing online users List
+		ArrayList<String> onlineUsers = new ArrayList<>();
+		for (Client client : server.getClients()) {
+			if (!client.equals(this) && client.hasUsername) {
+				onlineUsers.add(client.getUsername());
+			}
+		}
+		
+		//initializing object array [ list of users, this user , online users]
+		Object[] arrays = {usersList, server.getUsers().get(this.username), onlineUsers};
 		
 		objectOS.writeObject(arrays);
 		objectOS.flush();
@@ -199,16 +211,18 @@ public class Client extends Thread{
 	}
 	private void handleOffline() throws IOException {
 		for (Client client : server.getClients()) {
-			String[] command = {"offline", this.username};
-			client.getObjectOS().writeObject(command);
-			client.getObjectOS().flush();
+			if(!client.equals(this) && client.hasUsername()) {
+				String[] command = {"offline", this.username};
+				client.getObjectOS().writeObject(command);
+				client.getObjectOS().flush();
+			}
 		}
 	}
 	
 	private void handleOnline(String username) throws IOException {
 		String[] command = {"online", username};
 		for (Client client : server.getClients()) {
-			if (!client.equals(this)) {
+			if (!client.equals(this) && client.hasUsername()) {
 				client.getObjectOS().writeObject(command);
 				client.getObjectOS().flush();
 			}
@@ -283,7 +297,13 @@ public class Client extends Thread{
 		} 
 		if (commandArray[1].equalsIgnoreCase("email")) {
 			server.getUsers().get(this.username).setEmailAddress(commandArray[2]);
+		}else if (commandArray[1].equalsIgnoreCase("question")){
+			String quesString = commandArray[2];
+			String ansString = commandArray[3];
+			server.getUsers().get(this.username).setPasswordQuestion(quesString);
+			server.getUsers().get(this.username).setPasswordAnswer(ansString);
 		}
+		WriteFile.UsersFile.writeUsers(server.getUsers());
 	}
 	//---------------------------------------------getter methods-----------------------------------//
 	public ObjectOutputStream getObjectOS() {
@@ -291,5 +311,8 @@ public class Client extends Thread{
 	}
 	private String getUsername() {
 		return username;
+	}
+	private boolean hasUsername() {
+		return hasUsername;
 	}
 }

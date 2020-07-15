@@ -8,8 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="537.0" maxWidth="350.0" minHeight="537.0" minWidth="350.0" prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2aa4c;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<AnchorPane maxHeight="537.0" maxWidth="350.0" minHeight="537.0" minWidth="350.0" prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2aa4c;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SettingController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="52.0" stroke="#101820" strokeType="INSIDE" width="350.0" />
       <ImageView fitHeight="60.0" fitWidth="70.0" layoutX="269.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
@@ -22,14 +21,14 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../back-icon.png" />
          </image>
       </ImageView>
-      <Button layoutY="237.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="350.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff;" text="change password" />
-      <Button layoutY="369.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="350.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff;" text="change forgot password question" />
-      <Button layoutY="303.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="350.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff;" text="change email address" />
+      <Button layoutY="237.0" mnemonicParsing="false" onAction="#changePassScene" prefHeight="66.0" prefWidth="350.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff;" text="change password" />
+      <Button layoutY="369.0" mnemonicParsing="false" onAction="#changeQuestScene" prefHeight="66.0" prefWidth="350.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff;" text="change forgot password question" />
+      <Button layoutY="303.0" mnemonicParsing="false" onAction="#changeEmailScene" prefHeight="66.0" prefWidth="350.0" style="-fx-background-color: transparent; -fx-border-color: #101820ff;" text="change email address" />
       <ImageView fitHeight="128.0" fitWidth="126.0" layoutX="112.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../noun_user%20avatar_363639.png" />

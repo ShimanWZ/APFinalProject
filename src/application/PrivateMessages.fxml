@@ -90,7 +90,7 @@
             <Font name="Arial Rounded MT Bold" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="225.0" layoutY="413.0" mnemonicParsing="false" onAction="#playAI" prefHeight="28.0" prefWidth="110.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="setting">
+      <Button layoutX="225.0" layoutY="413.0" mnemonicParsing="false" onAction="#setting" prefHeight="28.0" prefWidth="110.0" style="-fx-background-color: #f2AA4cff; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="setting">
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                <image>

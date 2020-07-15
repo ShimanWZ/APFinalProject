@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import base.OpponentMoveListener;
+import base.User;
 import fileHandling.WriteFile;
 import games.GamesUtils;
 import games.TicTacToe;
@@ -49,8 +50,8 @@ public class TicTacToeController {
 						Platform.runLater(new Runnable() {
 					        @Override public void run() {
 								try {
-									reset();
 									setToGameEndedScene();
+									reset();
 								} catch (IOException e) {e.printStackTrace();}
 					        }
 						});
@@ -87,8 +88,8 @@ public class TicTacToeController {
 			
 		if (curGame.endOfGame()) {
 			WriteFile.TicTacToeFile.writeWinsAndLosses(curGame);
-			reset();
 			setToGameEndedScene();
+			reset();
 		}
 	}
 	
@@ -158,11 +159,25 @@ public class TicTacToeController {
 		boardContents.add(o);
 	}
 	private void setToGameEndedScene() throws IOException {
+		handleGameWinOrLoss();
 		GameEndedController.setGame(curGame);
 		Parent root = FXMLLoader.load(getClass().getResource("GameEndedScene.fxml"));
 		Main.tictactoe = new Scene(root);
 		Main.tictactoe.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		Main.getGameStage().setScene(Main.tictactoe);
+	}
+	private void handleGameWinOrLoss() {
+		User user = Main.getCurUser();
+		if (curGame.getWinner() == 1 ) {
+			if (Main.getIsGameWithAI()) user.setTictactoeCompWins(user.getTictactoeCompWins() + 1);
+			else user.setTictactoePlayWins(user.getTictactoePlayWins() + 1);
+		}
+		else if (curGame.getWinner() == -1 ) {
+			if (Main.getIsGameWithAI()) user.setTictactoeCompLosses(user.getTictactoeCompLosses() + 1);
+			else user.setTictactoePlayLosses(user.getTictactoePlayLosses() + 1);
+		}
+		TicTacToe.setLastOponentI(-1);
+		TicTacToe.setLastOponentJ(-1);
 	}
 	public TicTacToe getCurrGame() {
 		return curGame;

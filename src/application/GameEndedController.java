@@ -20,10 +20,10 @@ public class GameEndedController {
 	@FXML private void initializeScene() {
 		if (game.getWinner() == 1) {
 			gameStatus.setText("Yay! You Won!");
-		} else if (game.getWinner() == 0) {
-			gameStatus.setText("There was a tie!");
-		}else {
+		} else if (game.getWinner() == -1){
 			gameStatus.setText("Ooops! You Lost!");
+		} else {
+			gameStatus.setText("There was a tie!");
 		}
 		
 		compWins.setText("Wins from computer: " + Main.getCurUser().getTictactoeCompWins());

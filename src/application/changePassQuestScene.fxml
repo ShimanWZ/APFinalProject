@@ -10,8 +10,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2aa4c;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<AnchorPane prefHeight="537.0" prefWidth="350.0" style="-fx-background-color: #f2aa4c;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SettingController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#101820" height="52.0" stroke="#101820" strokeType="INSIDE" width="350.0" />
       <ImageView fitHeight="60.0" fitWidth="70.0" layoutX="269.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
@@ -24,15 +23,20 @@
             <Font name="Arial Rounded MT Bold" size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../back-icon.png" />
          </image>
       </ImageView>
-      <ChoiceBox layoutX="60.0" layoutY="148.0" prefWidth="150.0" />
-      <Label layoutX="96.0" layoutY="114.0" text="Label" />
-      <TextField layoutX="101.0" layoutY="207.0" />
-      <Button layoutX="149.0" layoutY="269.0" mnemonicParsing="false" text="Button" />
-      <Label layoutX="161.0" layoutY="336.0" text="Label" />
+      <ChoiceBox fx:id="questionChoice" layoutX="100.0" layoutY="191.0" onMouseClicked="#loadChoiceBox" prefWidth="150.0" style="-fx-mark-color: #101820; -fx-background-color: transparent; -fx-border-color: #101820; -fx-control-inner-background: #f2AA4cff; -fx-text-fill: #101820ff;" stylesheets="@application.css" />
+      <Label layoutX="76.0" layoutY="164.0" text="choose a question..." textFill="#101820">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="12.0" />
+         </font></Label>
+      <TextField fx:id="questAns" layoutX="59.0" layoutY="241.0" prefHeight="27.0" prefWidth="232.0" promptText="your answer" style="-fx-background-color: transparent; -fx-border-color: #101820; -fx-border-radius: 15; -fx-prompt-text-fill: #101820;" />
+      <Button layoutX="46.0" layoutY="296.0" mnemonicParsing="false" onAction="#changeQuestion" prefHeight="26.0" prefWidth="258.0" style="-fx-background-color: #101820; -fx-background-radius: 15;" text="apply" textFill="#f2aa4c">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="13.0" />
+         </font></Button>
    </children>
 </AnchorPane>

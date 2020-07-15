@@ -26,9 +26,9 @@
          </font>
       </Label>
       <TextField fx:id="searchbar" layoutX="8.0" layoutY="72.0" prefHeight="26.0" prefWidth="255.0" promptText="search users..." style="-fx-background-color: #101820ff; -fx-prompt-text-fill: #f2AA4cff; -fx-background-radius: 10; -fx-text-fill: #f2AA4cff;" />
-      <HBox layoutY="129.0" prefHeight="278.0" prefWidth="350.0">
+      <HBox layoutY="123.0" prefHeight="133.0" prefWidth="350.0">
          <children>
-            <ListView fx:id="contactList" onMouseClicked="#chooseContact" onMouseMoved="#load" prefHeight="290.0" prefWidth="335.0" style="-fx-border-color: #f2AA4cff; -fx-background-color: #f2AA4cff;" />
+            <ListView fx:id="contactList" onMouseClicked="#chooseContact" onMouseMoved="#load" prefHeight="225.0" prefWidth="334.0" style="-fx-border-color: #f2AA4cff; -fx-background-color: #f2AA4cff;" />
             <ScrollBar orientation="VERTICAL" prefHeight="248.0" prefWidth="18.0" style="-fx-border-color: #f2AA4cff; -fx-background-color: #f2AA4cff;" stylesheets="@application.css" />
          </children>
       </HBox>
@@ -62,10 +62,6 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Label layoutX="12.0" layoutY="106.0" text="contacts" textFill="#101820">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="18.0" />
-         </font></Label>
       <Button layoutX="254.0" layoutY="493.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-border-color: #101820ff; -fx-border-radius: 5;" text="logout" textFill="#101820" AnchorPane.rightAnchor="12.0">
          <font>
             <Font name="Arial Rounded MT Bold" size="11.0" />
@@ -77,7 +73,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="addContacts" disable="true" layoutX="175.0" layoutY="407.0" mnemonicParsing="false" onAction="#addContact" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: transparent; -fx-background-radius: 10;" text="add to contacts" textFill="#101820">
+      <Button fx:id="addContacts" disable="true" layoutX="180.0" layoutY="257.0" mnemonicParsing="false" onAction="#addContact" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: transparent; -fx-background-radius: 10;" text="add to contacts" textFill="#101820">
          <graphic>
             <ImageView fitHeight="64.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -93,5 +89,21 @@
                </image>
             </ImageView>
          </graphic></Button>
+      <Label layoutX="8.0" layoutY="101.0" text="contacts" textFill="#101820">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox layoutY="320.0" prefHeight="133.0" prefWidth="350.0">
+         <children>
+            <ListView fx:id="onlineUsers" onMouseClicked="#chooseContact" onMouseMoved="#load" prefHeight="225.0" prefWidth="334.0" style="-fx-border-color: #f2AA4cff; -fx-background-color: #f2AA4cff;" />
+            <ScrollBar orientation="VERTICAL" prefHeight="248.0" prefWidth="18.0" style="-fx-border-color: #f2AA4cff; -fx-background-color: #f2AA4cff;" stylesheets="@application.css" />
+         </children>
+      </HBox>
+      <Label layoutX="12.0" layoutY="297.0" text="online contacts..." textFill="#101820">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

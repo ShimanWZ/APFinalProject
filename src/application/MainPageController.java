@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import base.UserStatusListener;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,21 +29,31 @@ public class MainPageController {
 		Main.getCurUser().addUserStatusListener(new UserStatusListener() {
 			@Override
 			public void online(String username) {
-				onlineUsers.getItems().add(username);
+				Platform.runLater(new Runnable() {
+		            @Override public void run() {
+						onlineUsers.getItems().add(username);
+		            }
+				});
 			}
 			
 			@Override
 			public void offline(String username) {
-				onlineUsers.getItems().remove(username);
+				Platform.runLater(new Runnable() {
+		            @Override public void run() {
+						onlineUsers.getItems().remove(username);
+		            }
+				});
 			}
 		});
 	}
 	
 	@FXML private void load() {
 		username.setText(Main.getCurUser().getUsername());
+		//loading contacts list and online users list...
 		for (String user : Main.getCurUser().getContacts()) {
 			if(!contactList.getItems().contains(user) && !user.equalsIgnoreCase(Main.getCurUser().getUsername()) && !searchState) {
 				contactList.getItems().add(user);
+				if (Main.getOnlineUsers().contains(user)) onlineUsers.getItems().add(user);
 			}
 		}
 	}
@@ -96,6 +107,7 @@ public class MainPageController {
 		addContacts.setDisable(true);
 		searchbar.setText("");
 		contactList.getItems().clear();
+		onlineUsers.getItems().clear();
 	}
 	@FXML private void chat() throws IOException {
 		Parent root = FXMLLoader.load(getClass().getResource("PrivateMessages.fxml"));

@@ -24,6 +24,7 @@ public class Main extends Application {
 	private static User curUser;
 	private static String contact;
 	private static ArrayList<String> users;
+	private static ArrayList<String> onlineUsers;
 	private static boolean isGameWithAI = true;
 	
 	private static Server server;
@@ -124,5 +125,17 @@ public class Main extends Application {
 		bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		objOut = new ObjectOutputStream(outputStream);
 		objIn = new ObjectInputStream(inputStream);
+	}
+	public static ArrayList<String> getOnlineUsers() {
+		return onlineUsers;
+	}
+	public static void setOnlineUsers(ArrayList<String> onlineUsers) {
+		Main.onlineUsers = onlineUsers;
+	}
+	public static void addOnlineUser(String user) {
+		onlineUsers.add(user);
+	}
+	public static void removeOnlineUser(String user) {
+		onlineUsers.remove(user);
 	}
 }

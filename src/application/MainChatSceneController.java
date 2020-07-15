@@ -32,6 +32,8 @@ public class MainChatSceneController {
 	private String flushed = new String(Character.toChars(0x1F633));
 	private String heart = new String(Character.toChars(0x2764));
 	
+	
+	
 	{
 		Main.getCurUser().addMessageListener(new MessageListener() {
 			@Override
@@ -42,11 +44,12 @@ public class MainChatSceneController {
 							messages.getItems().add(user + " : " + message);
 			            }
 					});
-					setMessageOnRead();
+					setMessageOnRead(); //sets all the messages in this chat to true.
 				}
 			}
 		});
 	}
+	
 	
 	@FXML private void sendMessage() throws IOException {
 		String from = Main.getCurUser().getUsername();
@@ -56,11 +59,14 @@ public class MainChatSceneController {
 		
 		
 		if (!message.equals("")) {
+			
 			String[] command = initializeCommandString(from, to, message);
 			objOut.writeObject(command);
 			objOut.flush();
-			messages.getItems().add("you : " + message);
-			Main.getCurUser().addMessage(new Message(Main.getCurUser().getUsername(), to, message), to);
+			
+			messages.getItems().add("you : " + message); //adding to listview
+			
+			Main.getCurUser().addMessage(new Message(from, to, message), to);//adding to user messages
 			setMessageOnRead();
 			textField.setText("");
 		}
@@ -75,14 +81,12 @@ public class MainChatSceneController {
 	@FXML private void initializingMessages() {
 		if (init) {
 			username.setText(Main.getContact());
-			System.out.println("in intiing");
 			for (LinkedList<Message> messages : Main.getCurUser().getMessages()) {
 				
 				boolean firstCondition = messages.getFirst().getSender().equals(Main.getContact());
 				boolean secondCondition = messages.getFirst().getReciever().equals(Main.getContact());
 				
 				if (firstCondition || secondCondition) {
-					System.out.println("one of the conditions matches");
 					Iterator<Message> iterator = messages.iterator();
 					while (iterator.hasNext()) {
 						Message curMessage = iterator.next();
@@ -109,6 +113,7 @@ public class MainChatSceneController {
 	private void setMessageOnRead() {
 		User user = Main.getCurUser();
 		for (LinkedList<Message> messages : user.getMessages()) {
+			//sets all the messages from this user to read.
 			if (messages.getFirst().getSender().equals(Main.getContact()) || messages.getFirst().getReciever().equals(Main.getContact())) {
 				Iterator<Message> iterator = messages.iterator();
 				while (iterator.hasNext()) {
@@ -117,6 +122,7 @@ public class MainChatSceneController {
 			}
 		}
 	}
+	
 	@FXML private void addSmile(){
 		textField.setText(textField.getText() + " " + smile);
 	}

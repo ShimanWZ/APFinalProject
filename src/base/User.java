@@ -57,7 +57,6 @@ public class User implements Serializable {
 		
 		// recieving server response
 		String serverAnswer = in.readLine();
-		System.out.println("serv ans: " + serverAnswer);
 		String ansHandler = serverAnsHandler(serverAnswer);
 		return ansHandler;
 	}
@@ -111,6 +110,7 @@ public class User implements Serializable {
 		}
 	}
 	private static void handleOnline(String[] commandArray) {
+		System.out.println("online : " + commandArray[1] );
 		for (UserStatusListener listener : userStatusListeners) {
 			listener.online(commandArray[1]);
 		}
@@ -207,6 +207,12 @@ public class User implements Serializable {
 	public ArrayList<LinkedList<Message>> getMessages() {
 		return messages;
 	}
+	public OpponentMoveListener getOpponentMoveListener() {
+		return opponentMoveListener;
+	}
+	public void setOpponentMoveListener(OpponentMoveListener opponentMoveListener) {
+		this.opponentMoveListener = opponentMoveListener;
+	}
 	public void addMessage(Message message, String otheUser) {
 		boolean isFirstChat = true;
 		for (LinkedList<Message> messageList : this.messages) {
@@ -215,7 +221,6 @@ public class User implements Serializable {
 			
 			if(firstCondition || secondCondition) {
 				messageList.add(message);
-				System.out.println("messageadded!!!");
 				isFirstChat = false;
 				break;
 			}
@@ -225,11 +230,5 @@ public class User implements Serializable {
 			first.add(message);
 			this.messages.add(first);
 		}
-	}
-	public OpponentMoveListener getOpponentMoveListener() {
-		return opponentMoveListener;
-	}
-	public void setOpponentMoveListener(OpponentMoveListener opponentMoveListener) {
-		this.opponentMoveListener = opponentMoveListener;
 	}
 }

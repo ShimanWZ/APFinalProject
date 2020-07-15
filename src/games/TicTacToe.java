@@ -28,9 +28,8 @@ public class TicTacToe {
 		if(lastOpponentI != -1) board[lastOpponentI][lastOpponentJ] = TicTacToeContent.O;
 			
 		if (checkForWin()) {
-			winner = -1;
+			this.winner = -1;
 			sendGameProperties(-1, true);
-			System.out.println("Game over!");
 		}
 		
 	}
@@ -42,7 +41,6 @@ public class TicTacToe {
 
 			if (!AI) sendProperties(curI, curJ);
 			if (checkForWin()) {
-				System.out.println("U won!");
 				sendGameProperties(1, AI);
 				winner = 1;
 			}
@@ -68,7 +66,6 @@ public class TicTacToe {
 		else if(isBoardFull()) {
 			EOGame = true;
 			winner = 0;
-			System.out.println("you tied");	
 			return false;
 		}
 		return false;
@@ -120,7 +117,6 @@ public class TicTacToe {
 		if (checkForWin()) {
 			winner = -1;
 			sendGameProperties(-1, false);
-			System.out.println("Game over!");
 			return true;
 		}
 		return false;
@@ -138,7 +134,6 @@ public class TicTacToe {
 		try {
 			Main.getObjOut().writeObject(s);
 			Main.getObjOut().flush();
-			System.out.println("properties sent!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
